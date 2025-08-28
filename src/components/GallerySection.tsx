@@ -48,55 +48,54 @@ const GallerySection = () => {
     }
   ];
 
-  // Placeholder data - remplace par de vraies images
   const galleryItems = [
     {
       id: 1,
       category: 'ceremony',
-      title: 'Robe de cérémonie traditionnelle',
-      description: 'Ensemble brodé main, tissu Kente authentique',
-      image: '/api/placeholder/400/600',
-      likes: 45
+      title: 'Tenue Traditionnelle Ivoirienne',
+      description: 'Ensemble authentique avec bustier pailleté, jupe aux couleurs nationales et bijoux en or',
+      image: '/lovable-uploads/53b88883-e31b-4eda-8877-e463aab6c0ea.png',
+      likes: 127
     },
     {
       id: 2,
-      category: 'modern',
-      title: 'Collection Moderne "Héritage"',
-      description: 'Fusion contemporaine et tradition',
-      image: '/api/placeholder/400/600',
-      likes: 32
+      category: 'ceremony',
+      title: 'Couple Royal Africain',
+      description: 'Tenues de cérémonie assorties avec motifs géométriques et accessoires dorés authentiques',
+      image: '/lovable-uploads/038362a6-2fde-4e8a-8e61-73355f551086.png',
+      likes: 89
     },
     {
       id: 3,
       category: 'custom',
-      title: 'Création sur mesure',
-      description: 'Pièce unique pour mariage traditionnel',
-      image: '/api/placeholder/400/600',
-      likes: 67
+      title: 'Reine AKAN - Collection Royale',
+      description: 'Création exclusive avec couronne dorée, bijoux massifs et tissus aux motifs traditionnels',
+      image: '/lovable-uploads/fa474781-81f2-4a81-a22d-5a64c3202b26.png',
+      likes: 156
     },
     {
       id: 4,
-      category: 'ceremony',
-      title: 'Ensemble Grand Boubou',
-      description: 'Broderies dorées et perles authentiques',
-      image: '/api/placeholder/400/600',
-      likes: 28
+      category: 'modern',
+      title: 'Élégance Royale Moderne',
+      description: 'Fusion parfaite entre tradition AKAN et sophistication contemporaine',
+      image: '/lovable-uploads/58b27b46-eb21-4984-84a3-f57a2a38c13b.png',
+      likes: 134
     },
     {
       id: 5,
       category: 'modern',
-      title: 'Robe cocktail africaine',
-      description: 'Élégance moderne aux accents traditionnels',
+      title: 'Collection Moderne "Héritage"',
+      description: 'Fusion contemporaine et tradition africaine',
       image: '/api/placeholder/400/600',
-      likes: 53
+      likes: 32
     },
     {
       id: 6,
       category: 'custom',
-      title: 'Tenue de mariée unique',
-      description: 'Création exclusive en wax premium',
+      title: 'Création sur mesure Premium',
+      description: 'Pièce unique pour événement spécial',
       image: '/api/placeholder/400/600',
-      likes: 89
+      likes: 67
     },
   ];
 
@@ -171,12 +170,20 @@ const GallerySection = () => {
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className="aspect-[4/5] overflow-hidden bg-muted">
-                    <div className="w-full h-full bg-gradient-to-br from-luxury-gold/20 to-deep-black/20 flex items-center justify-center">
-                      <div className="text-center text-muted-foreground">
-                        <div className="font-playfair text-lg font-semibold mb-2">{item.title}</div>
-                        <div className="text-sm">{item.description}</div>
+                    {item.image.startsWith('/api/placeholder') ? (
+                      <div className="w-full h-full bg-gradient-to-br from-luxury-gold/20 to-deep-black/20 flex items-center justify-center">
+                        <div className="text-center text-muted-foreground">
+                          <div className="font-playfair text-lg font-semibold mb-2">{item.title}</div>
+                          <div className="text-sm">{item.description}</div>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    )}
                   </div>
                   
                   {/* Overlay */}

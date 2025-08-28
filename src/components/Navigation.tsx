@@ -18,6 +18,7 @@ const Navigation = () => {
     { name: 'Accueil', href: '#hero' },
     { name: 'À propos', href: '#about' },
     { name: 'Galerie', href: '#gallery' },
+    { name: 'Vidéos', href: '#videos' },
     { name: 'Processus', href: '#process' },
     { name: 'Témoignages', href: '#testimonials' },
     { name: 'Contact', href: '#contact' },

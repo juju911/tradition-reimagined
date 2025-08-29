@@ -35,7 +35,7 @@ const Navigation = () => {
             {/* Logo */}
             <div className="flex items-center">
               <img 
-                src="/lovable-uploads/fc7ca4a8-5298-468c-8c73-2cfa79f35d19.png"
+                src="/lovable-uploads/706179a4-8a32-4fcb-8ea8-f79e2066a54c.png"
                 alt="Tenue Traditionnelle - SEKA C. VANESSA"
                 className="h-10 w-auto object-contain"
               />

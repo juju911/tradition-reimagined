@@ -12,8 +12,13 @@ const GallerySection = () => {
 
   const categories = [
     { id: 'all', name: 'Toutes les créations' },
-    { id: 'ceremony', name: 'Tenues de cérémonie' },
-    { id: 'modern', name: 'Collections modernes' },
+    { id: 'akan', name: 'Tenues Akan' },
+    { id: 'gouro', name: 'Tenues Gouro' },
+    { id: 'bete', name: 'Tenues Bété' },
+    { id: 'senoufo', name: 'Tenues Sénoufo' },
+    { id: 'dida', name: 'Tenues Dida' },
+    { id: 'peulh', name: 'Tenues Peulh' },
+    { id: 'nigerian', name: 'Tenues Nigérianes' },
     { id: 'custom', name: 'Créations personnalisées' },
   ];
 

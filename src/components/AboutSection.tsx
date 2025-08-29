@@ -1,5 +1,4 @@
 import { Heart, Star, Sparkles } from 'lucide-react';
-import vanessaPortrait from '@/assets/vanessa-portrait.jpg';
 
 const AboutSection = () => {
   return (
@@ -10,8 +9,8 @@ const AboutSection = () => {
           <div className="relative">
             <div className="relative overflow-hidden rounded-2xl shadow-luxury hover-lift">
               <img 
-                src={vanessaPortrait}
-                alt="Portrait de SEKA Vanessa"
+                src="/lovable-uploads/8bf2f39d-7ec8-48af-8ded-68bd390ddcd5.png"
+                alt="Portrait de SEKA C. VANESSA"
                 className="w-full h-[600px] object-cover object-center"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-deep-black/20 to-transparent" />
@@ -25,29 +24,30 @@ const AboutSection = () => {
           {/* Content */}
           <div className="space-y-8">
             <div>
-              <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6 text-foreground">
-                À propos de 
-                <span className="text-luxury-gold animate-gold-shimmer block">Vanessa</span>
-              </h2>
+            <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6 text-foreground">
+              À propos de 
+              <span className="text-luxury-gold animate-gold-shimmer block">SEKA C. VANESSA</span>
+            </h2>
               <div className="w-24 h-1 bg-luxury-gold mb-8" />
             </div>
 
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Passionnée par la richesse culturelle africaine depuis son plus jeune âge, 
-                SEKA Vanessa a consacré sa vie à perpétuer et moderniser l'art vestimentaire traditionnel.
+                Passionnée de culture et de mode, SEKA C. VANESSA met en valeur la richesse du patrimoine africain à travers ses créations. 
+                Sa boutique, TENUE TRADITIONNELLE, propose la location et la vente de tenues issues des traditions ivoiriennes 
+                (Akan, Gouro, Bété, Sénoufo…), mais aussi des créations inspirées des peuples Peulhs et nigérians.
               </p>
               
               <p>
-                Formée aux techniques ancestrales de couture et enrichie par des études en design moderne, 
-                elle crée des pièces uniques qui racontent une histoire, celle d'un continent aux mille couleurs 
-                et aux traditions millénaires.
+                Chaque tenue incarne une histoire, une identité et une élégance intemporelle. 
+                Formée aux techniques ancestrales de tissage et enrichie par une vision moderne du design, 
+                elle utilise des tissus authentiques comme le rafia tissé (Didá) et le tapa (Bété).
               </p>
               
               <p>
-                Chaque création de son atelier reflète cette philosophie : 
-                <span className="text-luxury-gold font-semibold italic"> honorer le passé tout en embrassant l'avenir</span>, 
-                pour des femmes qui portent fièrement leur héritage.
+                Sa philosophie : 
+                <span className="text-luxury-gold font-semibold italic"> « Sublimer la tradition africaine pour révéler la beauté authentique de chaque femme »</span>, 
+                en créant des pièces qui transcendent les générations.
               </p>
             </div>
 

@@ -31,8 +31,8 @@ const ContactSection = () => {
     {
       icon: Phone,
       title: 'Téléphone',
-      content: '+221 77 XXX XX XX',
-      action: () => window.open('tel:+22177XXXXXX'),
+      content: '07 78 18 30 92',
+      action: () => window.open('tel:0778183092'),
       color: 'from-luxury-gold to-primary-hover'
     },
     {
@@ -45,7 +45,7 @@ const ContactSection = () => {
     {
       icon: MapPin,
       title: 'Atelier',
-      content: 'Dakar, Sénégal',
+      content: 'Abidjan, Côte d\'Ivoire',
       action: () => window.open('https://maps.google.com'),
       color: 'from-luxury-gold to-primary-hover'
     }
@@ -55,23 +55,30 @@ const ContactSection = () => {
     {
       icon: MessageCircle,
       name: 'WhatsApp',
-      handle: '+221 77 XXX XX XX',
-      url: 'https://wa.me/22177XXXXXX',
+      handle: '07 78 18 30 92',
+      url: 'https://wa.me/0778183092',
       color: 'bg-green-500'
     },
     {
       icon: Instagram,
-      name: 'Instagram',
-      handle: '@seka.vanessa',
-      url: 'https://instagram.com/seka.vanessa',
+      name: 'Instagram Boutique',
+      handle: '@tenue_traditionnelle',
+      url: 'https://www.instagram.com/tenue_traditionnelle',
       color: 'bg-gradient-to-br from-purple-500 to-pink-500'
     },
     {
       icon: Facebook,
-      name: 'Facebook',
-      handle: 'SEKA Vanessa Créations',
-      url: 'https://facebook.com/sekavanessa',
+      name: 'Facebook Personnel',
+      handle: 'SEKA Vanessa',
+      url: 'https://www.facebook.com/vanessa.seka.963',
       color: 'bg-blue-600'
+    },
+    {
+      icon: Facebook,
+      name: 'Facebook Boutique',
+      handle: 'TENUE TRADITIONNELLE',
+      url: 'https://www.facebook.com/profile.php?id=100043243184949',
+      color: 'bg-blue-700'
     }
   ];
 
@@ -247,7 +254,7 @@ const ContactSection = () => {
                   Besoin d'un conseil ? Contactez-moi directement sur WhatsApp
                 </p>
                 <Button 
-                  onClick={() => window.open('https://wa.me/22177XXXXXX')}
+                  onClick={() => window.open('https://wa.me/0778183092')}
                   variant="secondary"
                   className="bg-white text-green-600 hover:bg-green-50"
                 >

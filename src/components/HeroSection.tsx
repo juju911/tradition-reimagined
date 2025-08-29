@@ -19,14 +19,14 @@ const HeroSection = () => {
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="animate-fade-up">
           <h1 className="font-playfair text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
-            SEKA Vanessa
+            SEKA C. VANESSA
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-4 font-light">
-            Fondatrice & Créatrice de Tenues Traditionnelles
+            Fondatrice & Créatrice de TENUE TRADITIONNELLE
           </p>
           <div className="w-24 h-1 bg-luxury-gold mx-auto mb-8" />
           <p className="text-2xl md:text-3xl font-playfair text-white mb-12 italic max-w-3xl mx-auto leading-relaxed">
-            « Sublimer la tradition à travers l'art vestimentaire »
+            « Sublimer la tradition africaine à travers l'art vestimentaire »
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -41,9 +41,9 @@ const HeroSection = () => {
               variant="outline"
               size="lg"
               className="btn-elegant text-lg px-10 py-6 rounded-full border-2 border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-deep-black"
-              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => window.open('https://wa.me/0778183092', '_blank')}
             >
-              Mon histoire
+              Réserver une tenue
             </Button>
           </div>
         </div>

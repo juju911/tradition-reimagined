@@ -46,10 +46,15 @@ const TestimonialsSection = () => {
             Leurs <span className="text-luxury-gold animate-gold-shimmer">Témoignages</span>
           </h2>
           <div className="w-24 h-1 bg-luxury-gold mx-auto mb-8" />
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            La satisfaction de mes clientes est ma plus belle récompense. 
-            Découvrez leurs expériences et ressentis.
-          </p>
+          <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+            <p>
+              Découvrez nos témoignages clients et notre présence dans les médias :
+            </p>
+            <blockquote className="text-xl font-playfair italic text-luxury-gold border-l-4 border-luxury-gold pl-6 py-4 bg-luxury-gold/5 rounded-r-lg">
+              "Merci à TENUE TRADITIONNELLE pour la tenue de mon mariage traditionnel, une expérience inoubliable ! 
+              La qualité des tissus et l'attention aux détails sont exceptionnelles."
+            </blockquote>
+          </div>
         </div>
 
         {/* Testimonials Grid */}

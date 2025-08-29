@@ -5,19 +5,20 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 
+interface MediaItem {
+  id: string;
+  title: string;
+  description: string;
+  file_type: string;
+  url: string;
+}
+
 interface Message {
   id: string;
   text: string;
   isUser: boolean;
   timestamp: Date;
-  media?: Array<{
-    id: string;
-    title: string;
-    description?: string;
-    file_path: string;
-    file_type: 'image' | 'video';
-    url: string;
-  }>;
+  media?: MediaItem[];
 }
 
 export const Chatbot: React.FC = () => {
@@ -25,7 +26,7 @@ export const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Bonjour ! Je suis l\'assistante virtuelle de SEKA Vanessa. Comment puis-je vous aider avec nos tenues traditionnelles, locations ou créations sur mesure ? 💫',
+      text: 'Bonjour ! Je suis l\'assistante virtuelle de SEKA Vanessa. Comment puis-je vous aider avec nos tenues traditionnelles, locations ou créations sur mesure ? Demandez-moi de voir des photos ! 💫',
       isUser: false,
       timestamp: new Date()
     }
@@ -68,10 +69,7 @@ export const Chatbot: React.FC = () => {
         text: data.response,
         isUser: false,
         timestamp: new Date(),
-        media: data.media ? data.media.map((item: any) => ({
-          ...item,
-          url: `https://ilhrikioshryhiancdjt.supabase.co/storage/v1/object/public/media/${item.file_path}`
-        })) : undefined
+        media: data.media || []
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -143,29 +141,39 @@ export const Chatbot: React.FC = () => {
                   : 'bg-muted text-foreground'
               }`}
             >
-              <div className="mb-2">{message.text}</div>
-              {message.media && message.media.length > 0 && (
-                <div className="grid grid-cols-1 gap-2 mt-2">
-                  {message.media.map((mediaItem) => (
-                    <div key={mediaItem.id} className="border rounded overflow-hidden">
-                      {mediaItem.file_type === 'image' ? (
-                        <img
-                          src={mediaItem.url}
-                          alt={mediaItem.title}
-                          className="w-full h-auto max-h-32 object-cover cursor-pointer"
-                          onClick={() => window.open(mediaItem.url, '_blank')}
+              <div className="whitespace-pre-wrap">{message.text}</div>
+              
+              {/* Afficher les médias si disponibles */}
+              {!message.isUser && message.media && message.media.length > 0 && (
+                <div className="mt-2 space-y-2">
+                  {message.media.map((media) => (
+                    <div key={media.id} className="border rounded-md overflow-hidden bg-background">
+                      {media.file_type === 'image' ? (
+                        <img 
+                          src={media.url} 
+                          alt={media.title}
+                          className="w-full h-32 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                          onClick={() => window.open(media.url, '_blank')}
+                          onError={(e) => {
+                            console.error('Image failed to load:', media.url);
+                            e.currentTarget.style.display = 'none';
+                          }}
                         />
                       ) : (
-                        <video
-                          src={mediaItem.url}
+                        <video 
+                          src={media.url} 
                           controls
-                          className="w-full h-auto max-h-32"
+                          className="w-full h-32 object-cover"
+                          onError={(e) => {
+                            console.error('Video failed to load:', media.url);
+                            e.currentTarget.style.display = 'none';
+                          }}
                         />
                       )}
-                      <div className="p-2 bg-background/90">
-                        <p className="text-xs font-medium">{mediaItem.title}</p>
-                        {mediaItem.description && (
-                          <p className="text-xs text-muted-foreground">{mediaItem.description}</p>
+                      <div className="p-2 bg-muted/50">
+                        <div className="font-semibold text-xs text-foreground">{media.title}</div>
+                        {media.description && (
+                          <div className="text-xs text-muted-foreground">{media.description}</div>
                         )}
                       </div>
                     </div>
@@ -193,7 +201,7 @@ export const Chatbot: React.FC = () => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Posez votre question..."
+            placeholder="Posez votre question ou demandez des photos..."
             disabled={isLoading}
             className="flex-1"
           />

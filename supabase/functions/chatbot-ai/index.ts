@@ -1,13 +1,13 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.0';
 
 const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
-const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
-// Créer le client Supabase
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+// Initialiser le client Supabase pour accéder aux médias
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -70,64 +70,49 @@ async function searchMediaInDatabase(question: string): Promise<any[]> {
     
     const lowerQuestion = question.toLowerCase();
     
-    // Mots-clés pour rechercher des médias spécifiques
-    const mediaKeywords = {
-      images: ['photo', 'image', 'voir', 'montrer', 'regarder', 'galerie'],
-      videos: ['vidéo', 'video', 'clip', 'film', 'enregistrement'],
-      categories: {
-        'DOT': ['dot', 'cérémonie dot', 'traditionnel'],
-        'Mariage': ['mariage', 'mariée', 'époux', 'union'],
-        'Baptême': ['baptême', 'baptiser', 'naissance'],
-        'Shooting': ['shooting', 'photo', 'séance photo', 'mannequin'],
-        'Bété': ['bété', 'tapa'],
-        'Didá': ['didá', 'dida', 'rafia'],
-        'AKAN': ['akan', 'or', 'diamand']
-      }
-    };
-
+    // Mots-clés pour recherche de médias
+    const mediaKeywords = [
+      'photo', 'image', 'voir', 'montrer', 'vidéo', 'galerie',
+      'créations', 'tenues', 'costume', 'robe', 'outfit',
+      'dot', 'mariage', 'baptême', 'shooting', 'cérémonie',
+      'bété', 'didá', 'akan', 'traditionnel', 'pagne', 'rafia'
+    ];
+    
+    // Vérifier si la question demande des médias
+    const needsMedia = mediaKeywords.some(keyword => lowerQuestion.includes(keyword));
+    
+    if (!needsMedia) return [];
+    
     // Construire la requête de recherche
     let query = supabase
       .from('media')
-      .select('*');
-
-    // Recherche par type de fichier
-    let wantsImages = mediaKeywords.images.some(keyword => lowerQuestion.includes(keyword));
-    let wantsVideos = mediaKeywords.videos.some(keyword => lowerQuestion.includes(keyword));
+      .select('*')
+      .limit(6); // Limiter à 6 médias pour ne pas surcharger
     
-    if (wantsImages && !wantsVideos) {
-      query = query.eq('file_type', 'image');
-    } else if (wantsVideos && !wantsImages) {
-      query = query.eq('file_type', 'video');
-    }
-
-    // Recherche par catégorie/tags
-    const foundCategories = [];
-    for (const [category, keywords] of Object.entries(mediaKeywords.categories)) {
-      if (keywords.some(keyword => lowerQuestion.includes(keyword))) {
-        foundCategories.push(category);
-      }
-    }
-
-    if (foundCategories.length > 0) {
+    // Recherche par mots-clés dans le titre, description et tags
+    const searchTerms = lowerQuestion.split(' ').filter(term => term.length > 2);
+    
+    if (searchTerms.length > 0) {
+      // Recherche plus précise basée sur les termes
       query = query.or(
-        foundCategories.map(cat => `category.cs.{${cat}},tags.cs.{${cat}}`).join(',')
+        searchTerms.map(term => 
+          `title.ilike.%${term}%,description.ilike.%${term}%,tags.cs.{${term}},category.cs.{${term}}`
+        ).join(',')
       );
     }
-
-    // Limiter les résultats
-    query = query.limit(6).order('created_at', { ascending: false });
-
+    
     const { data, error } = await query;
-
+    
     if (error) {
-      console.error('Error searching media:', error);
+      console.error('Erreur lors de la recherche de médias:', error);
       return [];
     }
-
-    console.log('Found media:', data);
+    
+    console.log('Médias trouvés:', data?.length || 0);
     return data || [];
+    
   } catch (error) {
-    console.error('Error in searchMediaInDatabase:', error);
+    console.error('Erreur dans searchMediaInDatabase:', error);
     return [];
   }
 }
@@ -214,9 +199,9 @@ serve(async (req) => {
     let relevantInfo = findRelevantInfo(message);
     let additionalInfo = '';
     
-    // Étape 2: Rechercher des médias dans la base de données
+    // Étape 2: Recherche de médias dans la base de données
+    console.log('Searching for media in database...');
     const mediaResults = await searchMediaInDatabase(message);
-    console.log('Media search results:', mediaResults);
     
     // Étape 3: Si l'info semble incomplète, chercher sur Facebook
     const needsMoreInfo = checkIfNeedsMoreInfo(message, relevantInfo);
@@ -283,8 +268,15 @@ ${additionalInfo}
 
     return new Response(JSON.stringify({ 
       response: aiResponse,
-      media: mediaResults,
-      source: mediaResults.length > 0 ? 'knowledge_base_with_media' : (additionalInfo ? 'knowledge_base_with_facebook' : 'knowledge_base')
+      media: mediaResults.map(media => ({
+        id: media.id,
+        title: media.title,
+        description: media.description,
+        file_path: media.file_path,
+        file_type: media.file_type,
+        url: `${supabaseUrl}/storage/v1/object/public/media/${media.file_path}`
+      })),
+      source: additionalInfo ? 'knowledge_base_with_facebook' : 'knowledge_base' 
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

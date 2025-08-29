@@ -8,7 +8,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Base de connaissances RAG pour SEKA Vanessa
+// Base de connaissances RAG mise à jour pour SEKA Vanessa
 const knowledgeBase = `
 SEKA Vanessa - Créatrice de Tenues Traditionnelles
 
@@ -17,22 +17,32 @@ SERVICES PROPOSÉS:
 - Créations sur mesure et prestations personnalisées
 - Collections festives axées sur l'élégance et l'authenticité culturelle
 
+PACKAGES DISPONIBLES:
+- PACKAGE ARGENT (3 tenues): 1 tenue de présentation + 2 tenues couples (sauf Bété & DIDA) - Prix: 65 000 F CFA
+- PACKAGE OR (3 tenues): 1 tenue de présentation + 1 tenue couple AKAN Or + 1 tenue couple Bété ou DIDA - Prix: 80 000 F CFA  
+- PACKAGE DIAMAND (3 tenues): 1 tenue AKAN couple DIAMAND + Parapluie traditionnelle + 1 tenue couple Bété + 1 tenue couple au choix
+
 TYPES DE TENUES DISPONIBLES:
 - Tenues de cérémonie (DOT, mariage, baptême)
 - Tenues pour événements photo (shooting, clips)
 - Robes de mariée traditionnelles africaines
-- Accessoires assortis
+- Tenues AKAN (Or et Diamand)
+- Tenues couples traditionnelles
+- Accessoires assortis (parapluies traditionnels)
 
 TISSUS SPÉCIALISÉS:
 - Pagne rafia tissé (Didá) - symbole d'identité culturelle
 - Tapa (Bété) - tissu traditionnel précieux
 - Tissus ethniques Bété et Didá valorisés
+- Tissus AKAN traditionnels
 
 CONTACT:
 - Téléphone/WhatsApp: 07 78 18 30 92
 - Boutique: "Tenue traditionnelle" - Abidjan Ouest
 - Facebook boutique: https://www.facebook.com/profile.php?id=100043243184949
 - Facebook personnel: https://www.facebook.com/vanessa.seka.963
+- Page Instagram de la boutique
+- Page TikTok de la boutique
 
 VALEURS:
 - Mise en avant du patrimoine culturel ivoirien
@@ -46,6 +56,49 @@ VALEURS:
 - Shooting photo et clips vidéo
 - Cérémonies officielles
 `;
+
+// Fonction pour rechercher des informations complémentaires sur Facebook
+async function searchFacebookInfo(question: string): Promise<string> {
+  try {
+    // Fetch Facebook page content
+    const response = await fetch('https://www.facebook.com/profile.php?id=100043243184949', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+    
+    if (!response.ok) {
+      console.log('Could not fetch Facebook page');
+      return '';
+    }
+    
+    const content = await response.text();
+    
+    // Extract relevant text content (simplified approach)
+    const textContent = content
+      .replace(/<script[^>]*>.*?<\/script>/gi, '')
+      .replace(/<style[^>]*>.*?<\/style>/gi, '')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    
+    // Look for relevant information based on keywords
+    const keywords = question.toLowerCase().split(' ');
+    const relevantParts = [];
+    
+    const sentences = textContent.split(/[.!?]+/);
+    for (const sentence of sentences) {
+      if (keywords.some(keyword => sentence.toLowerCase().includes(keyword))) {
+        relevantParts.push(sentence.trim());
+      }
+    }
+    
+    return relevantParts.slice(0, 3).join('. ');
+  } catch (error) {
+    console.error('Error fetching Facebook info:', error);
+    return '';
+  }
+}
 
 function findRelevantInfo(question: string): string {
   const lowerQuestion = question.toLowerCase();
@@ -82,20 +135,31 @@ serve(async (req) => {
       throw new Error('OpenAI API key not configured');
     }
 
-    // Recherche dans la base de connaissances
-    const relevantInfo = findRelevantInfo(message);
+    // Étape 1: Recherche dans la base de connaissances RAG
+    let relevantInfo = findRelevantInfo(message);
+    let additionalInfo = '';
+    
+    // Étape 2: Si l'info semble incomplète, chercher sur Facebook
+    const needsMoreInfo = checkIfNeedsMoreInfo(message, relevantInfo);
+    if (needsMoreInfo) {
+      console.log('Searching for additional info on Facebook...');
+      additionalInfo = await searchFacebookInfo(message);
+    }
 
     const systemPrompt = `Tu es l'assistante virtuelle de SEKA Vanessa, spécialiste des tenues traditionnelles ivoiriennes. 
-    
-Utilise ces informations pour répondre aux questions:
+
+INFORMATIONS PRINCIPALES (RAG):
 ${relevantInfo}
 
-INSTRUCTIONS:
+${additionalInfo ? `INFORMATIONS COMPLÉMENTAIRES (Facebook):
+${additionalInfo}
+
+` : ''}INSTRUCTIONS:
 - Réponds toujours en français avec un ton chaleureux et professionnel
-- Utilise les informations fournies pour répondre précisément
+- Utilise d'abord les informations RAG, puis complète avec les infos Facebook si disponibles
 - Si la question concerne la location, mentionne qu'ils peuvent contacter au 07 78 18 30 92
 - Encourage toujours à visiter la boutique ou à contacter par WhatsApp
-- Si tu n'as pas l'information exacte, suggère de contacter directement
+- Si tu n'as pas l'information exacte, suggère de contacter directement ou de consulter la page Facebook
 - Utilise un langage dynamique comme "WAHOOOO!" quand approprié
 - Mets en avant l'authenticité culturelle et l'élégance des créations`;
 
@@ -127,7 +191,7 @@ INSTRUCTIONS:
 
     return new Response(JSON.stringify({ 
       response: aiResponse,
-      source: 'knowledge_base' 
+      source: additionalInfo ? 'knowledge_base_with_facebook' : 'knowledge_base' 
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
@@ -143,3 +207,20 @@ INSTRUCTIONS:
     });
   }
 });
+
+// Fonction pour déterminer si on a besoin d'infos supplémentaires
+function checkIfNeedsMoreInfo(question: string, currentInfo: string): boolean {
+  const lowerQuestion = question.toLowerCase();
+  
+  // Questions qui pourraient nécessiter des infos récentes de Facebook
+  const facebookKeywords = [
+    'nouveau', 'nouvelle', 'récent', 'dernière', 'actualité',
+    'promotion', 'offre', 'spéciale', 'événement', 'occasion',
+    'disponible maintenant', 'en stock', 'collection récente'
+  ];
+  
+  // Si la question contient des mots-clés récents ou si l'info RAG semble générique
+  return facebookKeywords.some(keyword => lowerQuestion.includes(keyword)) ||
+         lowerQuestion.includes('quoi de neuf') ||
+         lowerQuestion.includes('dernières créations');
+}

@@ -33,15 +33,12 @@ const Navigation = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-gold rounded-full flex items-center justify-center">
-                <span className="text-white font-playfair font-bold text-lg">SV</span>
-              </div>
-              <div>
-                <h1 className="font-playfair font-bold text-xl tracking-wide">
-                  <span className="animate-gold-shimmer">SEKA Vanessa</span>
-                </h1>
-              </div>
+            <div className="flex items-center">
+              <img 
+                src="/lovable-uploads/fc7ca4a8-5298-468c-8c73-2cfa79f35d19.png"
+                alt="Tenue Traditionnelle - SEKA C. VANESSA"
+                className="h-10 w-auto object-contain"
+              />
             </div>
 
             {/* Desktop Menu */}

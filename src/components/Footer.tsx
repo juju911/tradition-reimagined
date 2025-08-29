@@ -7,16 +7,14 @@ const Footer = () => {
     <footer className="bg-gradient-elegant text-white">
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Brand */}
+          {/* Brand Logo */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-gold rounded-full flex items-center justify-center">
-                <span className="text-deep-black font-playfair font-bold text-lg">SV</span>
-              </div>
-              <div>
-                <h3 className="font-playfair font-bold text-2xl">SEKA Vanessa</h3>
-                <p className="text-white/70 text-sm">Créatrice de Tenues Traditionnelles</p>
-              </div>
+              <img 
+                src="/lovable-uploads/fc7ca4a8-5298-468c-8c73-2cfa79f35d19.png"
+                alt="Tenue Traditionnelle - SEKA C. VANESSA"
+                className="h-16 w-auto object-contain"
+              />
             </div>
             
             <p className="text-white/80 leading-relaxed mb-6 max-w-md">
@@ -26,7 +24,7 @@ const Footer = () => {
             
             <div className="flex space-x-4">
               <a 
-                href="https://wa.me/22177XXXXXX" 
+                href="https://wa.me/0778183092" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg"
@@ -34,18 +32,18 @@ const Footer = () => {
                 <MessageCircle size={20} />
               </a>
               <a 
-                href="https://instagram.com/seka.vanessa" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg"
-              >
-                <Instagram size={20} />
-              </a>
-              <a 
-                href="https://facebook.com/sekavanessa" 
+                href="https://www.facebook.com/vanessa.seka.963" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg"
+              >
+                <Facebook size={20} />
+              </a>
+              <a 
+                href="https://www.facebook.com/profile.php?id=100043243184949" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg"
               >
                 <Facebook size={20} />
               </a>
@@ -79,15 +77,15 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-luxury-gold" />
-                <span className="text-white/70">+221 77 XXX XX XX</span>
+                <span className="text-white/70">07 78 18 30 92</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-luxury-gold" />
-                <span className="text-white/70">contact@sekavanessa.com</span>
+                <span className="text-white/70">sekavanessa@tenuetraditionelle.com</span>
               </li>
               <li className="flex items-start space-x-3">
                 <div className="w-4 h-4 bg-luxury-gold rounded-full mt-1" />
-                <span className="text-white/70">Dakar, Sénégal</span>
+                <span className="text-white/70">Abidjan, Côte d'Ivoire</span>
               </li>
             </ul>
           </div>
@@ -118,13 +116,13 @@ const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left">
           <p className="text-white/60 text-sm mb-4 md:mb-0">
-            © {currentYear} SEKA Vanessa. Tous droits réservés.
+            © {currentYear} SEKA C. VANESSA - TENUE TRADITIONNELLE. Tous droits réservés.
           </p>
           
           <div className="flex items-center space-x-2 text-white/60 text-sm">
             <span>Créé avec</span>
             <Heart className="w-4 h-4 text-luxury-gold fill-current" />
-            <span>à Dakar</span>
+            <span>en Côte d'Ivoire</span>
           </div>
         </div>
       </div>

@@ -10,6 +10,14 @@ interface Message {
   text: string;
   isUser: boolean;
   timestamp: Date;
+  media?: Array<{
+    id: string;
+    title: string;
+    description?: string;
+    file_path: string;
+    file_type: 'image' | 'video';
+    url: string;
+  }>;
 }
 
 export const Chatbot: React.FC = () => {
@@ -59,7 +67,11 @@ export const Chatbot: React.FC = () => {
         id: (Date.now() + 1).toString(),
         text: data.response,
         isUser: false,
-        timestamp: new Date()
+        timestamp: new Date(),
+        media: data.media ? data.media.map((item: any) => ({
+          ...item,
+          url: `https://ilhrikioshryhiancdjt.supabase.co/storage/v1/object/public/media/${item.file_path}`
+        })) : undefined
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -131,7 +143,35 @@ export const Chatbot: React.FC = () => {
                   : 'bg-muted text-foreground'
               }`}
             >
-              {message.text}
+              <div className="mb-2">{message.text}</div>
+              {message.media && message.media.length > 0 && (
+                <div className="grid grid-cols-1 gap-2 mt-2">
+                  {message.media.map((mediaItem) => (
+                    <div key={mediaItem.id} className="border rounded overflow-hidden">
+                      {mediaItem.file_type === 'image' ? (
+                        <img
+                          src={mediaItem.url}
+                          alt={mediaItem.title}
+                          className="w-full h-auto max-h-32 object-cover cursor-pointer"
+                          onClick={() => window.open(mediaItem.url, '_blank')}
+                        />
+                      ) : (
+                        <video
+                          src={mediaItem.url}
+                          controls
+                          className="w-full h-auto max-h-32"
+                        />
+                      )}
+                      <div className="p-2 bg-background/90">
+                        <p className="text-xs font-medium">{mediaItem.title}</p>
+                        {mediaItem.description && (
+                          <p className="text-xs text-muted-foreground">{mediaItem.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         ))}

@@ -1,7 +1,13 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+// Créer le client Supabase
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -56,6 +62,75 @@ VALEURS:
 - Shooting photo et clips vidéo
 - Cérémonies officielles
 `;
+
+// Fonction pour rechercher des médias dans la base de données
+async function searchMediaInDatabase(question: string): Promise<any[]> {
+  try {
+    console.log('Searching for media in database with question:', question);
+    
+    const lowerQuestion = question.toLowerCase();
+    
+    // Mots-clés pour rechercher des médias spécifiques
+    const mediaKeywords = {
+      images: ['photo', 'image', 'voir', 'montrer', 'regarder', 'galerie'],
+      videos: ['vidéo', 'video', 'clip', 'film', 'enregistrement'],
+      categories: {
+        'DOT': ['dot', 'cérémonie dot', 'traditionnel'],
+        'Mariage': ['mariage', 'mariée', 'époux', 'union'],
+        'Baptême': ['baptême', 'baptiser', 'naissance'],
+        'Shooting': ['shooting', 'photo', 'séance photo', 'mannequin'],
+        'Bété': ['bété', 'tapa'],
+        'Didá': ['didá', 'dida', 'rafia'],
+        'AKAN': ['akan', 'or', 'diamand']
+      }
+    };
+
+    // Construire la requête de recherche
+    let query = supabase
+      .from('media')
+      .select('*');
+
+    // Recherche par type de fichier
+    let wantsImages = mediaKeywords.images.some(keyword => lowerQuestion.includes(keyword));
+    let wantsVideos = mediaKeywords.videos.some(keyword => lowerQuestion.includes(keyword));
+    
+    if (wantsImages && !wantsVideos) {
+      query = query.eq('file_type', 'image');
+    } else if (wantsVideos && !wantsImages) {
+      query = query.eq('file_type', 'video');
+    }
+
+    // Recherche par catégorie/tags
+    const foundCategories = [];
+    for (const [category, keywords] of Object.entries(mediaKeywords.categories)) {
+      if (keywords.some(keyword => lowerQuestion.includes(keyword))) {
+        foundCategories.push(category);
+      }
+    }
+
+    if (foundCategories.length > 0) {
+      query = query.or(
+        foundCategories.map(cat => `category.cs.{${cat}},tags.cs.{${cat}}`).join(',')
+      );
+    }
+
+    // Limiter les résultats
+    query = query.limit(6).order('created_at', { ascending: false });
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error searching media:', error);
+      return [];
+    }
+
+    console.log('Found media:', data);
+    return data || [];
+  } catch (error) {
+    console.error('Error in searchMediaInDatabase:', error);
+    return [];
+  }
+}
 
 // Fonction pour rechercher des informations complémentaires sur Facebook
 async function searchFacebookInfo(question: string): Promise<string> {
@@ -139,11 +214,26 @@ serve(async (req) => {
     let relevantInfo = findRelevantInfo(message);
     let additionalInfo = '';
     
-    // Étape 2: Si l'info semble incomplète, chercher sur Facebook
+    // Étape 2: Rechercher des médias dans la base de données
+    const mediaResults = await searchMediaInDatabase(message);
+    console.log('Media search results:', mediaResults);
+    
+    // Étape 3: Si l'info semble incomplète, chercher sur Facebook
     const needsMoreInfo = checkIfNeedsMoreInfo(message, relevantInfo);
     if (needsMoreInfo) {
       console.log('Searching for additional info on Facebook...');
       additionalInfo = await searchFacebookInfo(message);
+    }
+
+    // Construire les informations sur les médias trouvés
+    let mediaInfo = '';
+    if (mediaResults.length > 0) {
+      mediaInfo = `\nMÉDIAS DISPONIBLES:
+${mediaResults.map(media => {
+  const publicUrl = `${supabaseUrl}/storage/v1/object/public/media/${media.file_path}`;
+  return `- ${media.title}: ${media.description || 'Description non disponible'} (${media.file_type === 'image' ? 'Photo' : 'Vidéo'}) - URL: ${publicUrl}`;
+}).join('\n')}
+`;
     }
 
     const systemPrompt = `Tu es l'assistante virtuelle de SEKA Vanessa, spécialiste des tenues traditionnelles ivoiriennes. 
@@ -154,9 +244,11 @@ ${relevantInfo}
 ${additionalInfo ? `INFORMATIONS COMPLÉMENTAIRES (Facebook):
 ${additionalInfo}
 
-` : ''}INSTRUCTIONS:
+` : ''}${mediaInfo}INSTRUCTIONS:
 - Réponds toujours en français avec un ton chaleureux et professionnel
 - Utilise d'abord les informations RAG, puis complète avec les infos Facebook si disponibles
+- Si des médias sont disponibles dans la base de données, partage les URLs des photos/vidéos pertinentes
+- Quand tu partages des médias, utilise ce format: "Voici quelques photos/vidéos : [Titre](URL)"
 - Si la question concerne la location, mentionne qu'ils peuvent contacter au 07 78 18 30 92
 - Encourage toujours à visiter la boutique ou à contacter par WhatsApp
 - Si tu n'as pas l'information exacte, suggère de contacter directement ou de consulter la page Facebook
@@ -191,7 +283,8 @@ ${additionalInfo}
 
     return new Response(JSON.stringify({ 
       response: aiResponse,
-      source: additionalInfo ? 'knowledge_base_with_facebook' : 'knowledge_base' 
+      media: mediaResults,
+      source: mediaResults.length > 0 ? 'knowledge_base_with_media' : (additionalInfo ? 'knowledge_base_with_facebook' : 'knowledge_base')
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

@@ -11,9 +11,13 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
               <img 
-                src="/lovable-uploads/706179a4-8a32-4fcb-8ea8-f79e2066a54c.png"
+                src="/lovable-uploads/706179a4-8a32-4fcb-8ea8-f79e2066a54c.png?v=2"
                 alt="Tenue Traditionnelle - SEKA C. VANESSA"
-                className="h-16 w-auto object-contain"
+                className="h-20 w-auto object-contain max-w-[250px]"
+                onError={(e) => {
+                  console.log('Footer logo failed to load');
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             </div>
             

@@ -121,8 +121,93 @@ const GallerySection = () => {
       image: '/lovable-uploads/33c7a2aa-9ead-4129-9a26-de3ac6808422.png',
       likes: 201
     },
+    // Nouvelles photos AKAN
     {
       id: 9,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Couple royal akan avec tissus Kente jaune et violet, bijoux dorés massifs et couronne traditionnelle. Majesté et élégance akan.',
+      image: '/lovable-uploads/6010adca-bf43-45b3-b47f-d303bc162de4.png',
+      likes: 198
+    },
+    {
+      id: 10,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Reine akan avec bâton de commandement doré, tenue violette et or, couronne royale. Symbole de pouvoir et tradition akan.',
+      image: '/lovable-uploads/6cf4012a-9e4b-4b10-ba18-d407c0c098b7.png',
+      likes: 175
+    },
+    {
+      id: 11,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Couple akan en Kente blanc et or avec motifs géométriques traditionnels, bijoux dorés et couronne royale. Pureté et noblesse akan.',
+      image: '/lovable-uploads/a91a71ea-864e-436b-acdf-2e81240c0a0a.png',
+      likes: 220
+    },
+    // Photos SÉNOUFO
+    {
+      id: 12,
+      category: 'senoufo',
+      title: 'TENUE TRADITIONNELLE SÉNOUFO',
+      description: 'Couple sénoufo en tenue traditionnelle avec tissus rayés bleus et blancs, colliers de cauris authentiques. Élégance sénoufo classique.',
+      image: '/lovable-uploads/5698df4d-b758-4d09-9e7f-29e56e8bd5b5.png',
+      likes: 156
+    },
+    {
+      id: 13,
+      category: 'senoufo',
+      title: 'TENUE TRADITIONNELLE SÉNOUFO',
+      description: 'Ensemble sénoufo avec tissus rayés traditionnels, colliers de cauris et perles d\'ambre. Authenticité et tradition sénoufo.',
+      image: '/lovable-uploads/01faea58-3eb6-49d2-b08d-b5762198c084.png',
+      likes: 143
+    },
+    // Photos BÉTÉ
+    {
+      id: 14,
+      category: 'bete',
+      title: 'TENUE TRADITIONNELLE BÉTÉ',
+      description: 'Couple bété avec tissus rouges et jaunes traditionnels, bâton de commandement et parures ethniques. Fierté et tradition bété.',
+      image: '/lovable-uploads/e342fae8-2fbc-487f-bb1a-2fcfbf6b8dcf.png',
+      likes: 187
+    },
+    // Photos DIDA
+    {
+      id: 15,
+      category: 'dida',
+      title: 'TENUE TRADITIONNELLE DIDA',
+      description: 'Couple dida en tenue de rafia naturel avec colliers de cauris et accessoires traditionnels. Authenticité et respect des traditions dida.',
+      image: '/lovable-uploads/6e6166ca-d679-40b5-a548-01bdecb3b2b7.png',
+      likes: 134
+    },
+    {
+      id: 16,
+      category: 'dida',
+      title: 'TENUE TRADITIONNELLE DIDA',
+      description: 'Ensemble dida avec tissus rafia naturel, colliers traditionnels et bâton cérémoniel. Élégance naturelle de la tradition dida.',
+      image: '/lovable-uploads/d4a18f42-ddd0-47aa-8226-6ccaae746aa1.png',
+      likes: 167
+    },
+    {
+      id: 17,
+      category: 'dida',
+      title: 'TENUE TRADITIONNELLE DIDA',
+      description: 'Reine dida avec couronne en cauris, jupe en rafia doré et colliers traditionnels. Majesté et tradition dida authentique.',
+      image: '/lovable-uploads/8c31ac8e-3cf1-443d-a3d2-dd0b17621d38.png',
+      likes: 189
+    },
+    // Créations personnalisées
+    {
+      id: 18,
+      category: 'custom',
+      title: 'CRÉATION PERSONNALISÉE ROYALE',
+      description: 'Couple royal avec tissus multicolores, bijoux dorés et accessoires ethniques. Fusion créative de plusieurs traditions africaines.',
+      image: '/lovable-uploads/5a70fe3d-7755-404d-ab18-58bbdf3c8bc5.png',
+      likes: 201
+    },
+    {
+      id: 19,
       category: 'modern',
       title: 'Collection Moderne "Héritage"',
       description: 'Fusion contemporaine et tradition africaine',
@@ -130,7 +215,7 @@ const GallerySection = () => {
       likes: 32
     },
     {
-      id: 10,
+      id: 20,
       category: 'custom',
       title: 'Création sur mesure Premium',
       description: 'Pièce unique pour événement spécial',

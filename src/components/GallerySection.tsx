@@ -6,6 +6,8 @@ const GallerySection = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showAllPhotos, setShowAllPhotos] = useState(false);
+  const [showAllVideos, setShowAllVideos] = useState(false);
 
   const tabs = [
     { id: 'photos', name: 'Photos', icon: Eye },
@@ -24,14 +26,15 @@ const GallerySection = () => {
     { id: 'custom', name: 'Créations personnalisées' },
   ];
 
-  // Vidéos YouTube
+  // Vidéos Facebook et YouTube
   const videos = [
+    // Vidéos YouTube existantes
     {
       id: 1,
       title: 'Tenues Ivoiriennes dans sa Diversité',
       description: 'Découvrez la richesse et la variété des créations traditionnelles ivoiriennes',
       url: 'https://youtube.com/shorts/3M_sZ-eZSv0?si=30uyaGC7QyMWpHiz',
-      embedId: '3M_sZ-eZSv0',
+      type: 'youtube',
       category: 'Traditions Ivoiriennes',
       thumbnail: 'https://img.youtube.com/vi/3M_sZ-eZSv0/maxresdefault.jpg'
     },
@@ -40,8 +43,8 @@ const GallerySection = () => {
       title: 'Tenue AKAN Jaune Royal',
       description: 'Une création somptueuse inspirée de la culture AKAN en jaune royal',
       url: 'https://youtube.com/shorts/vIvzhteFV9w?si=Pi5wO5L9r6eWyz0i',
-      embedId: 'vIvzhteFV9w',
-      category: 'Collections Royales',
+      type: 'youtube',
+      category: 'AKAN',
       thumbnail: 'https://img.youtube.com/vi/vIvzhteFV9w/maxresdefault.jpg'
     },
     {
@@ -49,9 +52,73 @@ const GallerySection = () => {
       title: 'Robe de Mariée Traditionnelle',
       description: 'Une création unique pour un mariage traditionnel inoubliable',
       url: 'https://youtube.com/shorts/TEaUuVHX_DY?si=8KYC3vBtg0Rp7et4',
-      embedId: 'TEaUuVHX_DY',
+      type: 'youtube',
       category: 'Mariages',
       thumbnail: 'https://img.youtube.com/vi/TEaUuVHX_DY/maxresdefault.jpg'
+    },
+    // Nouvelles vidéos Facebook
+    {
+      id: 4,
+      title: 'Tenue Traditionnelle DIDA Authentique',
+      description: 'Découvrez la beauté des tenues traditionnelles DIDA avec leurs tissus rafia naturel et leurs accessoires ethniques',
+      url: 'https://www.facebook.com/share/v/17J3tSqrwj/',
+      type: 'facebook',
+      category: 'DIDA',
+      thumbnail: '/api/placeholder/400/600'
+    },
+    {
+      id: 5,
+      title: 'Élégance AKAN Royale',
+      description: 'Plongez dans l\'univers royal AKAN avec cette magnifique création aux tissus Kente et bijoux dorés',
+      url: 'https://www.facebook.com/share/v/1AqCBPAjR7/',
+      type: 'facebook',
+      category: 'AKAN',
+      thumbnail: '/api/placeholder/400/600'
+    },
+    {
+      id: 6,
+      title: 'Création AKAN Exceptionnelle',
+      description: 'Une tenue AKAN d\'exception qui marie tradition et modernité dans un style unique',
+      url: 'https://www.facebook.com/share/v/1A5cx84Uek/',
+      type: 'facebook',
+      category: 'AKAN',
+      thumbnail: '/api/placeholder/400/600'
+    },
+    {
+      id: 7,
+      title: 'Majesté AKAN Traditionnelle',
+      description: 'Admirez cette création AKAN somptueuse qui reflète toute la richesse culturelle de cette tradition',
+      url: 'https://www.facebook.com/share/v/17724rJYuC/',
+      type: 'facebook',
+      category: 'AKAN',
+      thumbnail: '/api/placeholder/400/600'
+    },
+    {
+      id: 8,
+      title: 'Tenue Traditionnelle GOURO',
+      description: 'Découvrez l\'art vestimentaire GOURO avec cette création authentique aux couleurs chatoyantes',
+      url: 'https://www.facebook.com/share/v/1ETdc9iofb/',
+      type: 'facebook',
+      category: 'GOURO',
+      thumbnail: '/api/placeholder/400/600'
+    },
+    {
+      id: 9,
+      title: 'Présentation de la Boutique et des Pagnes',
+      description: 'Visitez notre boutique et découvrez notre collection de pagnes traditionnels authentiques',
+      url: 'https://www.facebook.com/share/v/19tqFEAAKV/',
+      type: 'facebook',
+      category: 'Présentation',
+      thumbnail: '/api/placeholder/400/600'
+    },
+    {
+      id: 10,
+      title: 'Tenue Foulard en Pays AKAN',
+      description: 'L\'art du port du foulard dans la tradition AKAN, une élégance intemporelle',
+      url: 'https://www.facebook.com/share/v/1FzKcwcdzn/',
+      type: 'facebook',
+      category: 'AKAN',
+      thumbnail: '/api/placeholder/400/600'
     }
   ];
 
@@ -228,6 +295,10 @@ const GallerySection = () => {
     ? galleryItems 
     : galleryItems.filter(item => item.category === activeCategory);
 
+  // Limiter l'affichage à 8 éléments par défaut
+  const displayedPhotos = showAllPhotos ? filteredItems : filteredItems.slice(0, 8);
+  const displayedVideos = showAllVideos ? videos : videos.slice(0, 8);
+
   const openModal = (index: number) => {
     const filtered = filteredItems;
     const actualIndex = galleryItems.findIndex(item => item.id === filtered[index].id);
@@ -318,7 +389,7 @@ const GallerySection = () => {
 
             {/* Photo Gallery Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-              {filteredItems.map((item, index) => (
+              {displayedPhotos.map((item, index) => (
                 <div
                   key={item.id}
                   className="group relative overflow-hidden rounded-2xl shadow-elegant hover-lift animate-fade-up"
@@ -366,6 +437,18 @@ const GallerySection = () => {
                 </div>
               ))}
             </div>
+
+            {/* Bouton Voir plus pour photos */}
+            {!showAllPhotos && filteredItems.length > 8 && (
+              <div className="text-center mb-16">
+                <button
+                  onClick={() => setShowAllPhotos(true)}
+                  className="px-8 py-3 bg-luxury-gold text-deep-black font-semibold rounded-full hover:bg-luxury-gold/90 transition-colors shadow-glow"
+                >
+                  Voir toutes les photos ({filteredItems.length - 8} de plus)
+                </button>
+              </div>
+            )}
           </>
         )}
 
@@ -380,7 +463,7 @@ const GallerySection = () => {
 
             {/* Video Gallery Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-              {videos.map((video, index) => (
+              {displayedVideos.map((video, index) => (
                 <div
                   key={video.id}
                   className="group overflow-hidden rounded-2xl shadow-elegant hover-lift bg-card animate-fade-up"
@@ -388,11 +471,20 @@ const GallerySection = () => {
                 >
                   {/* Video Thumbnail/Preview */}
                   <div className="relative aspect-[9/16] bg-gradient-to-br from-luxury-gold/20 to-deep-black/20 overflow-hidden">
-                    <img 
-                      src={video.thumbnail}
-                      alt={video.title}
-                      className="w-full h-full object-cover"
-                    />
+                    {video.thumbnail.startsWith('/api/placeholder') ? (
+                      <div className="w-full h-full bg-gradient-to-br from-luxury-gold/20 to-deep-black/20 flex items-center justify-center">
+                        <div className="text-center text-muted-foreground">
+                          <div className="font-playfair text-lg font-semibold mb-2">{video.category}</div>
+                          <div className="text-sm">Vidéo Facebook</div>
+                        </div>
+                      </div>
+                    ) : (
+                      <img 
+                        src={video.thumbnail}
+                        alt={video.title}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                     
                     {/* Play Overlay */}
                     <div className="absolute inset-0 bg-deep-black/30 flex items-center justify-center">
@@ -410,7 +502,7 @@ const GallerySection = () => {
                         className="flex items-center space-x-2 bg-luxury-gold/90 backdrop-blur-sm px-6 py-3 rounded-full text-deep-black font-semibold hover:bg-luxury-gold transition-colors shadow-glow"
                       >
                         <ExternalLink size={18} />
-                        <span>Voir sur YouTube</span>
+                        <span>Voir sur {video.type === 'youtube' ? 'YouTube' : 'Facebook'}</span>
                       </a>
                     </div>
                   </div>
@@ -445,6 +537,18 @@ const GallerySection = () => {
                 </div>
               ))}
             </div>
+
+            {/* Bouton Voir plus pour vidéos */}
+            {!showAllVideos && videos.length > 8 && (
+              <div className="text-center mb-16">
+                <button
+                  onClick={() => setShowAllVideos(true)}
+                  className="px-8 py-3 bg-luxury-gold text-deep-black font-semibold rounded-full hover:bg-luxury-gold/90 transition-colors shadow-glow"
+                >
+                  Voir toutes les vidéos ({videos.length - 8} de plus)
+                </button>
+              </div>
+            )}
           </>
         )}
 

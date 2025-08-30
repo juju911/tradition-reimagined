@@ -56,41 +56,9 @@ const GallerySection = () => {
   ];
 
   const galleryItems = [
+    // Photos AKAN
     {
       id: 1,
-      category: 'ceremony',
-      title: 'Tenue Traditionnelle Ivoirienne',
-      description: 'Ensemble authentique avec bustier pailleté, jupe aux couleurs nationales et bijoux en or',
-      image: '/lovable-uploads/53b88883-e31b-4eda-8877-e463aab6c0ea.png',
-      likes: 127
-    },
-    {
-      id: 2,
-      category: 'ceremony',
-      title: 'Couple Royal Africain',
-      description: 'Tenues de cérémonie assorties avec motifs géométriques et accessoires dorés authentiques',
-      image: '/lovable-uploads/038362a6-2fde-4e8a-8e61-73355f551086.png',
-      likes: 89
-    },
-    {
-      id: 3,
-      category: 'custom',
-      title: 'Reine AKAN - Collection Royale',
-      description: 'Création exclusive avec couronne dorée, bijoux massifs et tissus aux motifs traditionnels',
-      image: '/lovable-uploads/fa474781-81f2-4a81-a22d-5a64c3202b26.png',
-      likes: 156
-    },
-    {
-      id: 4,
-      category: 'modern',
-      title: 'Élégance Royale Moderne',
-      description: 'Fusion parfaite entre tradition AKAN et sophistication contemporaine',
-      image: '/lovable-uploads/58b27b46-eb21-4984-84a3-f57a2a38c13b.png',
-      likes: 134
-    },
-    // Nouvelles photos AKAN
-    {
-      id: 5,
       category: 'akan',
       title: 'TENUE TRADITIONNELLE AKAN',
       description: 'Magnifique ensemble AKAN avec pagne Kente authentique, bijoux dorés traditionnels et accessoires ethniques. Une création qui célèbre la richesse culturelle akan.',
@@ -98,7 +66,7 @@ const GallerySection = () => {
       likes: 145
     },
     {
-      id: 6,
+      id: 2,
       category: 'akan',
       title: 'TENUE TRADITIONNELLE AKAN',
       description: 'Élégante robe akan ornée de sequins rouges et dorés, couronne royale et colliers traditionnels massifs. Un hommage à la noblesse akan.',
@@ -106,7 +74,7 @@ const GallerySection = () => {
       likes: 167
     },
     {
-      id: 7,
+      id: 3,
       category: 'akan',
       title: 'TENUE TRADITIONNELLE AKAN',
       description: 'Couple royal akan en tenue de cérémonie avec tissus Kente authentiques, bijoux dorés et accessoires traditionnels. Perfection des détails culturels.',
@@ -114,7 +82,7 @@ const GallerySection = () => {
       likes: 192
     },
     {
-      id: 8,
+      id: 4,
       category: 'akan',
       title: 'TENUE TRADITIONNELLE AKAN',
       description: 'Ensemble akan royal avec bâton de commandement, tissus Kente aux motifs géométriques et parure complète en or. Symbole de prestige et tradition.',
@@ -122,7 +90,7 @@ const GallerySection = () => {
       likes: 178
     },
     {
-      id: 9,
+      id: 5,
       category: 'akan',
       title: 'TENUE TRADITIONNELLE AKAN',
       description: 'Création akan avec éventail en plumes d\'or, diadème floral doré et pagne Kente royal. Expression parfaite de l\'élégance akan traditionnelle.',
@@ -130,7 +98,7 @@ const GallerySection = () => {
       likes: 156
     },
     {
-      id: 10,
+      id: 6,
       category: 'akan',
       title: 'TENUE TRADITIONNELLE AKAN',
       description: 'Tenue akan de cérémonie avec colliers dorés superposés, diadème floral et tissus colorés traditionnels. Beauté et authenticité culturelle.',
@@ -138,7 +106,7 @@ const GallerySection = () => {
       likes: 143
     },
     {
-      id: 11,
+      id: 7,
       category: 'akan',
       title: 'TENUE TRADITIONNELLE AKAN',
       description: 'Ensemble akan sophistiqué avec parure dorée complète, diadème royal et tissus aux motifs ethniques. Raffinement et tradition akan.',
@@ -146,7 +114,7 @@ const GallerySection = () => {
       likes: 189
     },
     {
-      id: 12,
+      id: 8,
       category: 'akan',
       title: 'TENUE TRADITIONNELLE AKAN',
       description: 'Création akan exceptionnelle avec bijoux dorés traditionnels, diadème floral et tissus colorés authentiques. Chef-d\'œuvre de l\'artisanat akan.',
@@ -154,7 +122,7 @@ const GallerySection = () => {
       likes: 201
     },
     {
-      id: 13,
+      id: 9,
       category: 'modern',
       title: 'Collection Moderne "Héritage"',
       description: 'Fusion contemporaine et tradition africaine',
@@ -162,7 +130,7 @@ const GallerySection = () => {
       likes: 32
     },
     {
-      id: 14,
+      id: 10,
       category: 'custom',
       title: 'Création sur mesure Premium',
       description: 'Pièce unique pour événement spécial',

@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Eye, Heart, Play, ExternalLink } from 'lucide-react';
+import { Eye, Heart, Play, ExternalLink, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const GallerySection = () => {
   const [activeTab, setActiveTab] = useState('photos');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const tabs = [
     { id: 'photos', name: 'Photos', icon: Eye },
@@ -86,8 +88,73 @@ const GallerySection = () => {
       image: '/lovable-uploads/58b27b46-eb21-4984-84a3-f57a2a38c13b.png',
       likes: 134
     },
+    // Nouvelles photos AKAN
     {
       id: 5,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Magnifique ensemble AKAN avec pagne Kente authentique, bijoux dorés traditionnels et accessoires ethniques. Une création qui célèbre la richesse culturelle akan.',
+      image: '/lovable-uploads/1a55c20a-52dc-4d0f-bfb5-ab14b32af217.png',
+      likes: 145
+    },
+    {
+      id: 6,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Élégante robe akan ornée de sequins rouges et dorés, couronne royale et colliers traditionnels massifs. Un hommage à la noblesse akan.',
+      image: '/lovable-uploads/3b093cb8-8469-4378-8426-e69f54e7e606.png',
+      likes: 167
+    },
+    {
+      id: 7,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Couple royal akan en tenue de cérémonie avec tissus Kente authentiques, bijoux dorés et accessoires traditionnels. Perfection des détails culturels.',
+      image: '/lovable-uploads/2ed7b78a-b18e-4c31-a403-441c4c9ebbbc.png',
+      likes: 192
+    },
+    {
+      id: 8,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Ensemble akan royal avec bâton de commandement, tissus Kente aux motifs géométriques et parure complète en or. Symbole de prestige et tradition.',
+      image: '/lovable-uploads/6b745224-8edd-4f44-9128-9bec4ef48804.png',
+      likes: 178
+    },
+    {
+      id: 9,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Création akan avec éventail en plumes d\'or, diadème floral doré et pagne Kente royal. Expression parfaite de l\'élégance akan traditionnelle.',
+      image: '/lovable-uploads/ab4f1c7d-6ccc-4624-bbd5-9c61ed7761f9.png',
+      likes: 156
+    },
+    {
+      id: 10,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Tenue akan de cérémonie avec colliers dorés superposés, diadème floral et tissus colorés traditionnels. Beauté et authenticité culturelle.',
+      image: '/lovable-uploads/75e72368-9853-4d1f-bce4-a2983c65dcce.png',
+      likes: 143
+    },
+    {
+      id: 11,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Ensemble akan sophistiqué avec parure dorée complète, diadème royal et tissus aux motifs ethniques. Raffinement et tradition akan.',
+      image: '/lovable-uploads/7cf9cd32-4148-43c0-a3b4-68a51a0aa924.png',
+      likes: 189
+    },
+    {
+      id: 12,
+      category: 'akan',
+      title: 'TENUE TRADITIONNELLE AKAN',
+      description: 'Création akan exceptionnelle avec bijoux dorés traditionnels, diadème floral et tissus colorés authentiques. Chef-d\'œuvre de l\'artisanat akan.',
+      image: '/lovable-uploads/33c7a2aa-9ead-4129-9a26-de3ac6808422.png',
+      likes: 201
+    },
+    {
+      id: 13,
       category: 'modern',
       title: 'Collection Moderne "Héritage"',
       description: 'Fusion contemporaine et tradition africaine',
@@ -95,7 +162,7 @@ const GallerySection = () => {
       likes: 32
     },
     {
-      id: 6,
+      id: 14,
       category: 'custom',
       title: 'Création sur mesure Premium',
       description: 'Pièce unique pour événement spécial',
@@ -107,6 +174,36 @@ const GallerySection = () => {
   const filteredItems = activeCategory === 'all' 
     ? galleryItems 
     : galleryItems.filter(item => item.category === activeCategory);
+
+  const openModal = (index: number) => {
+    const filtered = filteredItems;
+    const actualIndex = galleryItems.findIndex(item => item.id === filtered[index].id);
+    setSelectedImageIndex(actualIndex);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImageIndex(null);
+  };
+
+  const nextImage = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex((selectedImageIndex + 1) % galleryItems.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(selectedImageIndex === 0 ? galleryItems.length - 1 : selectedImageIndex - 1);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+    if (e.key === 'Escape') closeModal();
+  };
 
   return (
     <section id="gallery" className="py-24 bg-background">
@@ -203,7 +300,10 @@ const GallerySection = () => {
                           <span className="text-sm">{item.likes}</span>
                         </div>
                         
-                        <button className="flex items-center space-x-2 bg-luxury-gold/20 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-luxury-gold hover:text-deep-black transition-colors">
+                        <button 
+                          onClick={() => openModal(index)}
+                          className="flex items-center space-x-2 bg-luxury-gold/20 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-luxury-gold hover:text-deep-black transition-colors"
+                        >
                           <Eye size={16} />
                           <span className="text-sm">Voir plus</span>
                         </button>
@@ -307,6 +407,73 @@ const GallerySection = () => {
             Discutons de votre projet
           </button>
         </div>
+
+        {/* Modal de visualisation des images */}
+        {isModalOpen && selectedImageIndex !== null && (
+          <div 
+            className="fixed inset-0 z-50 bg-deep-black/90 flex items-center justify-center p-4"
+            onClick={closeModal}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+          >
+            <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center">
+              {/* Bouton fermer */}
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 z-10 w-10 h-10 bg-deep-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-luxury-gold hover:text-deep-black transition-colors"
+              >
+                <X size={20} />
+              </button>
+
+              {/* Bouton précédent */}
+              <button
+                onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-deep-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-luxury-gold hover:text-deep-black transition-colors"
+              >
+                <ChevronLeft size={24} />
+              </button>
+
+              {/* Bouton suivant */}
+              <button
+                onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-deep-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-luxury-gold hover:text-deep-black transition-colors"
+              >
+                <ChevronRight size={24} />
+              </button>
+
+              {/* Image principale */}
+              <div 
+                className="relative max-w-full max-h-full flex flex-col items-center justify-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={galleryItems[selectedImageIndex].image}
+                  alt={galleryItems[selectedImageIndex].title}
+                  className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl"
+                />
+                
+                {/* Informations de l'image */}
+                <div className="mt-6 text-center max-w-2xl">
+                  <h3 className="font-playfair text-2xl font-bold text-white mb-2">
+                    {galleryItems[selectedImageIndex].title}
+                  </h3>
+                  <p className="text-white/80 text-lg">
+                    {galleryItems[selectedImageIndex].description}
+                  </p>
+                  <div className="flex items-center justify-center space-x-2 text-luxury-gold mt-4">
+                    <Heart size={18} />
+                    <span>{galleryItems[selectedImageIndex].likes} J'aime</span>
+                  </div>
+                </div>
+
+                {/* Indicateur de position */}
+                <div className="mt-4 text-white/60 text-sm">
+                  {selectedImageIndex + 1} / {galleryItems.length}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

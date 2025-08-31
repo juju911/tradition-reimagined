@@ -1,7 +1,20 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://seka-vanessa.lovable.app/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Allow all search engines to crawl our content
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
 Allow: /
 
 User-agent: Twitterbot
@@ -10,5 +23,23 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+# Block access to admin areas (if any in the future)
+Disallow: /admin/
+Disallow: /private/
+
+# Block access to sensitive files
+Disallow: *.json$
+Disallow: *.xml$
+Disallow: /api/
+
+# Allow access to assets and uploads
+Allow: /lovable-uploads/
+Allow: /assets/
+Allow: *.css$
+Allow: *.js$
+Allow: *.png$
+Allow: *.jpg$
+Allow: *.jpeg$
+Allow: *.gif$
+Allow: *.webp$
+Allow: *.svg$

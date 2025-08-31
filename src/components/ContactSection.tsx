@@ -4,6 +4,8 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Card } from './ui/card';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -13,11 +15,51 @@ const ContactSection = () => {
     subject: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Logique d'envoi du formulaire
-    console.log('Formulaire envoyé:', formData);
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          subject: formData.subject,
+          message: formData.message
+        }]);
+
+      if (error) throw error;
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+
+      // Show success message
+      toast({
+        title: "Message envoyé !",
+        description: "Merci, notre administrateur vous reviendra assez tôt.",
+      });
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur s'est produite. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -38,15 +80,15 @@ const ContactSection = () => {
     {
       icon: Mail,
       title: 'Email',
-      content: 'contact@sekavanessa.com',
-      action: () => window.open('mailto:contact@sekavanessa.com'),
+      content: 'vanessaestherseka@gmail.com',
+      action: () => window.open('mailto:vanessaestherseka@gmail.com'),
       color: 'from-deep-black to-foreground'
     },
     {
       icon: MapPin,
       title: 'Atelier',
-      content: 'Abidjan, Côte d\'Ivoire',
-      action: () => window.open('https://maps.google.com'),
+      content: 'Yopougon Sicogi - Pont Vagabond, Abidjan',
+      action: () => window.open('https://maps.google.com?q=Yopougon+Sicogi+Pont+Vagabond+Abidjan'),
       color: 'from-luxury-gold to-primary-hover'
     }
   ];
@@ -147,7 +189,7 @@ const ContactSection = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="+221 77 XXX XX XX"
+                      placeholder="+225 XX XX XX XX XX"
                       className="border-border focus:border-luxury-gold focus:ring-luxury-gold"
                     />
                   </div>
@@ -174,7 +216,7 @@ const ContactSection = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Décrivez votre projet, vos inspirations, vos attentes..."
+                    placeholder="Décrivez votre projet, vos inspirations, le nombre de tenues, vos attentes..."
                     rows={6}
                     required
                     className="border-border focus:border-luxury-gold focus:ring-luxury-gold resize-none"
@@ -184,9 +226,10 @@ const ContactSection = () => {
                 <Button 
                   type="submit"
                   className="w-full btn-gold text-lg py-4"
+                  disabled={isSubmitting}
                 >
                   <Send className="w-5 h-5 mr-2" />
-                  Envoyer le message
+                  {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
                 </Button>
               </form>
             </Card>

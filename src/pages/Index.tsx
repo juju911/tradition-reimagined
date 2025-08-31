@@ -9,6 +9,8 @@ import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
 import FAQSection from '../components/FAQSection';
 import { Chatbot } from '../components/Chatbot';
+import WhatsAppButton from '../components/WhatsAppButton';
+import { Toaster } from '@/components/ui/toaster';
 
 const Index = () => {
   return (
@@ -25,7 +27,9 @@ const Index = () => {
         <ContactSection />
       </main>
       <Footer />
+      <WhatsAppButton />
       <Chatbot />
+      <Toaster />
     </div>
   );
 };

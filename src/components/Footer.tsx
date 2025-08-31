@@ -1,7 +1,53 @@
 import { Heart, Instagram, Facebook, MessageCircle, Mail, Phone } from 'lucide-react';
+import { useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const { toast } = useToast();
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsSubscribing(true);
+
+    try {
+      const { error } = await supabase
+        .from('newsletter_subscriptions')
+        .insert([{ email }]);
+
+      if (error) {
+        if (error.code === '23505') { // Unique constraint violation
+          toast({
+            title: "Déjà inscrit",
+            description: "Cette adresse email est déjà inscrite à notre newsletter.",
+            variant: "destructive",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        setEmail('');
+        toast({
+          title: "Inscription réussie !",
+          description: "Merci ! Vous recevrez nos dernières actualités.",
+        });
+      }
+    } catch (error) {
+      console.error('Error subscribing to newsletter:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur s'est produite. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
 
   return (
     <footer className="bg-gradient-elegant text-white">
@@ -85,11 +131,11 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-luxury-gold" />
-                <span className="text-white/70">sekavanessa@tenuetraditionelle.com</span>
+                <span className="text-white/70">vanessaestherseka@gmail.com</span>
               </li>
               <li className="flex items-start space-x-3">
                 <div className="w-4 h-4 bg-luxury-gold rounded-full mt-1" />
-                <span className="text-white/70">Abidjan, Côte d'Ivoire</span>
+                <span className="text-white/70">Yopougon Sicogi - Pont Vagabond, Abidjan</span>
               </li>
             </ul>
           </div>
@@ -104,16 +150,23 @@ const Footer = () => {
             <p className="text-white/70 mb-4 text-sm">
               Recevez les dernières créations et actualités de l'atelier
             </p>
-            <div className="flex gap-2">
+            <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
               <input 
                 type="email" 
                 placeholder="Votre email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 className="flex-1 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-luxury-gold"
               />
-              <button className="px-6 py-2 bg-luxury-gold text-deep-black rounded-lg font-medium hover:bg-white transition-colors">
-                S'abonner
+              <button 
+                type="submit"
+                disabled={isSubscribing}
+                className="px-6 py-2 bg-luxury-gold text-deep-black rounded-lg font-medium hover:bg-white transition-colors disabled:opacity-50"
+              >
+                {isSubscribing ? 'En cours...' : 'S\'abonner'}
               </button>
-            </div>
+            </form>
           </div>
         </div>
 

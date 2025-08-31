@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          subject: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          subject?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          subject?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       media: {
         Row: {
           category: string[] | null
@@ -47,6 +80,27 @@ export type Database = {
           tags?: string[] | null
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      newsletter_subscriptions: {
+        Row: {
+          email: string
+          id: string
+          is_active: boolean
+          subscribed_at: string
+        }
+        Insert: {
+          email: string
+          id?: string
+          is_active?: boolean
+          subscribed_at?: string
+        }
+        Update: {
+          email?: string
+          id?: string
+          is_active?: boolean
+          subscribed_at?: string
         }
         Relationships: []
       }

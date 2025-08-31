@@ -334,12 +334,14 @@ const GallerySection = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6 text-foreground">
-            Ma <span className="text-luxury-gold animate-gold-shimmer">Galerie</span>
+            Location & Vente de Tenues Traditionnelles 
+            <span className="text-luxury-gold animate-gold-shimmer block">Africaines Authentiques</span>
           </h2>
           <div className="w-24 h-1 bg-luxury-gold mx-auto mb-8" />
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Découvrez mes créations uniques où tradition et modernité se rencontrent 
-            dans une harmonie parfaite
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Découvrez notre collection de <strong>tenues traditionnelles ivoiriennes</strong> en location et vente : 
+            <strong>pagne Didá, tapa Bété, kente Akan</strong> et créations africaines authentiques pour mariages, 
+            cérémonies DOT et événements culturels à Abidjan et international.
           </p>
         </div>
 
@@ -405,7 +407,7 @@ const GallerySection = () => {
                     ) : (
                       <img 
                         src={item.image} 
-                        alt={item.title}
+                        alt={`Location tenue traditionnelle ${item.category.toUpperCase()} ivoirienne - ${item.title} - SEKA Vanessa créatrice mode africaine Abidjan`}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     )}

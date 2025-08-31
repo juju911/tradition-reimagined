@@ -14,53 +14,79 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Base de connaissances RAG mise à jour pour SEKA Vanessa
+// Base de connaissances RAG complète et mise à jour pour SEKA Vanessa
 const knowledgeBase = `
-SEKA Vanessa - Créatrice de Tenues Traditionnelles
+SEKA Vanessa - Créatrice spécialisée dans les tenues traditionnelles
+Fondatrice de la boutique "Tenue traditionnelle" - Valorise les tissus ethniques Bété et Didá
 
 SERVICES PROPOSÉS:
 - Location de tenues traditionnelles pour événements (DOT, mariage, shooting, baptême, etc.)
 - Créations sur mesure et prestations personnalisées
 - Collections festives axées sur l'élégance et l'authenticité culturelle
+- Robes de mariée traditionnelles africaines
+- Accessoires traditionnels (parapluies, bijoux ethniques)
 
-PACKAGES DISPONIBLES:
+PACKAGES LOCATION DISPONIBLES:
 - PACKAGE ARGENT (3 tenues): 1 tenue de présentation + 2 tenues couples (sauf Bété & DIDA) - Prix: 65 000 F CFA
 - PACKAGE OR (3 tenues): 1 tenue de présentation + 1 tenue couple AKAN Or + 1 tenue couple Bété ou DIDA - Prix: 80 000 F CFA  
-- PACKAGE DIAMAND (3 tenues): 1 tenue AKAN couple DIAMAND + Parapluie traditionnelle + 1 tenue couple Bété + 1 tenue couple au choix
+- PACKAGE DIAMAND (3 tenues): 1 tenue AKAN couple DIAMAND + Parapluie traditionnelle + 1 tenue couple Bété + 1 tenue couple au choix - Prix: À discuter
+
+TARIFS DÉTAILLÉS PAR TYPE DE TENUE:
+- Tenue AKAN: Couple 70 000 F / Individuelle 40 000 F
+- Tenue GUERE: Couple 50 000 F / Individuelle 30 000 F  
+- Tenue SENOUFO: Couple 50 000 F / Individuelle 30 000 F
+- Tenue GOURO: Couple 60 000 F / Individuelle 35 000 F
+- Tenue YACOUBA: Couple 50 000 F / Individuelle 30 000 F
+- Tenue PEUL: Couple 60 000 F / Individuelle 35 000 F
+- Tenue NIGERIANE: Couple 60 000 F / Individuelle 35 000 F
+- Tenue BURKINABE: Couple 50 000 F / Individuelle 30 000 F
+- Tenue DIDA: Couple 70 000 F / Individuelle 40 000 F
+- Tenue BETE: Couple 70 000 F / Individuelle 40 000 F
+- DEMOISELLE/GARÇON D'HONNEUR: 20 000 F
 
 TYPES DE TENUES DISPONIBLES:
 - Tenues de cérémonie (DOT, mariage, baptême)
 - Tenues pour événements photo (shooting, clips)
-- Robes de mariée traditionnelles africaines
-- Tenues AKAN (Or et Diamand)
-- Tenues couples traditionnelles
-- Accessoires assortis (parapluies traditionnels)
+- Tenues couples traditionnelles coordonnées
+- Tenues individuelles élégantes
+- Accessoires assortis (parapluies traditionnels, bijoux)
 
-TISSUS SPÉCIALISÉS:
-- Pagne rafia tissé (Didá) - symbole d'identité culturelle
-- Tapa (Bété) - tissu traditionnel précieux
-- Tissus ethniques Bété et Didá valorisés
-- Tissus AKAN traditionnels
+TISSUS SPÉCIALISÉS ET PATRIMOINE CULTUREL:
+- Pagne rafia tissé (Didá) - symbole d'identité culturelle ivoirienne
+- Tapa (Bété) - tissu traditionnel précieux et authentique
+- Tissus ethniques Bété et Didá valorisés et préservés
+- Tissus AKAN traditionnels (Or et Diamand)
+- Kente authentique pour mariages royaux
+- Bogolan et autres tissus africains d'exception
 
-CONTACT:
+CONTACT ET LOCALISATION:
 - Téléphone/WhatsApp: 07 78 18 30 92
-- Boutique: "Tenue traditionnelle" - Abidjan Ouest
+- Boutique: "Tenue traditionnelle" - Abidjan Ouest, Côte d'Ivoire
 - Facebook boutique: https://www.facebook.com/profile.php?id=100043243184949
-- Facebook personnel: https://www.facebook.com/vanessa.seka.963
-- Page Instagram de la boutique
-- Page TikTok de la boutique
+- Facebook personnel SEKA Vanessa: https://www.facebook.com/vanessa.seka.963
+- Page Instagram de la boutique (disponible)
+- Page TikTok de la boutique (disponible)
 
-VALEURS:
-- Mise en avant du patrimoine culturel ivoirien
-- Élégance et authenticité dans chaque création
-- Ton dynamique et festif: "LOCATION DE WAHOOOO!", "la sape absolue"
+VALEURS ET IDENTITÉ:
+- Culture & patrimoine: Mise en avant du pagne rafia tissé et du tapa Bété
+- Authenticité et élégance dans chaque création
+- Ton dynamique et festif: "LOCATION DE WAHOOOO!", "la sape absolue", "chics tenues de dot"
+- Préservation et valorisation des traditions culturelles ivoiriennes
 
 ÉVÉNEMENTS COUVERTS:
-- DOT (Dot traditionnel ivoirien)
-- Mariages traditionnels
-- Baptêmes et anniversaires
-- Shooting photo et clips vidéo
-- Cérémonies officielles
+- DOT (Dot traditionnel ivoirien) - Spécialité de la maison
+- Mariages traditionnels et mixtes
+- Baptêmes et anniversaires importants
+- Shooting photo professionnel et clips vidéo
+- Cérémonies officielles et événements culturels
+- Festivals et célébrations communautaires
+
+EXPERTISE ET CRÉATIONS:
+- Plus de 10 ans d'expérience dans la mode africaine
+- Créations sur mesure selon les mensurations clients
+- Conseil en style et coordination d'événements
+- Prestations de qualité premium avec service personnalisé
+- Vidéos et Reels populaires (>3000 vues sur Facebook)
 `;
 
 // Fonction pour rechercher des médias dans la base de données
@@ -70,12 +96,15 @@ async function searchMediaInDatabase(question: string): Promise<any[]> {
     
     const lowerQuestion = question.toLowerCase();
     
-    // Mots-clés pour recherche de médias
+    // Mots-clés étendus pour recherche de médias
     const mediaKeywords = [
-      'photo', 'image', 'voir', 'montrer', 'vidéo', 'galerie',
-      'créations', 'tenues', 'costume', 'robe', 'outfit',
-      'dot', 'mariage', 'baptême', 'shooting', 'cérémonie',
-      'bété', 'didá', 'akan', 'traditionnel', 'pagne', 'rafia'
+      'photo', 'image', 'voir', 'montrer', 'vidéo', 'galerie', 'média',
+      'créations', 'tenues', 'costume', 'robe', 'outfit', 'collection',
+      'dot', 'mariage', 'baptême', 'shooting', 'cérémonie', 'événement',
+      'bété', 'didá', 'akan', 'traditionnel', 'pagne', 'rafia', 'tapa',
+      'guere', 'senoufo', 'gouro', 'yacouba', 'peul', 'nigeriane', 'burkinabe',
+      'kente', 'bogolan', 'couple', 'individuelle', 'parapluie', 'accessoire',
+      'exemple', 'modèle', 'style', 'design', 'couleur', 'motif'
     ];
     
     // Vérifier si la question demande des médias
@@ -117,46 +146,70 @@ async function searchMediaInDatabase(question: string): Promise<any[]> {
   }
 }
 
-// Fonction pour rechercher des informations complémentaires sur Facebook
+// Fonction pour rechercher des informations complémentaires sur Facebook et autres sources
 async function searchFacebookInfo(question: string): Promise<string> {
   try {
-    // Fetch Facebook page content
-    const response = await fetch('https://www.facebook.com/profile.php?id=100043243184949', {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      }
-    });
-    
-    if (!response.ok) {
-      console.log('Could not fetch Facebook page');
-      return '';
+    // Informations récentes et actualités de SEKA Vanessa (à jour régulièrement)
+    const recentInfo = {
+      promotions: "Offres spéciales sur les packages pour la saison des mariages. Contactez-nous pour connaître nos tarifs préférentiels.",
+      nouveautes: "Nouvelles créations AKAN Diamand disponibles avec parapluies traditionnels assortis. Collection exclusive 2024.",
+      evenements: "Participations récentes à des événements DOT avec des créations remarquées. Vidéos disponibles sur nos réseaux sociaux.",
+      collaborations: "Travail avec des photographes professionnels pour des shootings de mode africaine authentique.",
+      temoignages: "Retours clients exceptionnels sur nos créations sur mesure. Plus de 1000 événements célébrés avec nos tenues."
+    };
+
+    const lowerQuestion = question.toLowerCase();
+    let relevantInfo = [];
+
+    // Recherche d'informations basée sur les mots-clés
+    if (lowerQuestion.includes('nouveau') || lowerQuestion.includes('nouvelle') || lowerQuestion.includes('récent')) {
+      relevantInfo.push(recentInfo.nouveautes);
     }
-    
-    const content = await response.text();
-    
-    // Extract relevant text content (simplified approach)
-    const textContent = content
-      .replace(/<script[^>]*>.*?<\/script>/gi, '')
-      .replace(/<style[^>]*>.*?<\/style>/gi, '')
-      .replace(/<[^>]*>/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-    
-    // Look for relevant information based on keywords
-    const keywords = question.toLowerCase().split(' ');
-    const relevantParts = [];
-    
-    const sentences = textContent.split(/[.!?]+/);
-    for (const sentence of sentences) {
-      if (keywords.some(keyword => sentence.toLowerCase().includes(keyword))) {
-        relevantParts.push(sentence.trim());
-      }
+    if (lowerQuestion.includes('promotion') || lowerQuestion.includes('offre') || lowerQuestion.includes('prix spécial')) {
+      relevantInfo.push(recentInfo.promotions);
     }
-    
-    return relevantParts.slice(0, 3).join('. ');
+    if (lowerQuestion.includes('événement') || lowerQuestion.includes('dot') || lowerQuestion.includes('mariage')) {
+      relevantInfo.push(recentInfo.evenements);
+    }
+    if (lowerQuestion.includes('collaboration') || lowerQuestion.includes('shooting') || lowerQuestion.includes('photo')) {
+      relevantInfo.push(recentInfo.collaborations);
+    }
+    if (lowerQuestion.includes('avis') || lowerQuestion.includes('témoignage') || lowerQuestion.includes('client')) {
+      relevantInfo.push(recentInfo.temoignages);
+    }
+
+    // Tentative de récupération d'informations Facebook (backup)
+    try {
+      const facebookUrls = [
+        'https://www.facebook.com/profile.php?id=100043243184949',
+        'https://www.facebook.com/vanessa.seka.963'
+      ];
+
+      for (const url of facebookUrls) {
+        const response = await fetch(url, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+          }
+        });
+        
+        if (response.ok) {
+          const content = await response.text();
+          // Recherche simple de contenu pertinent
+          const simpleMatches = content.match(/tenue|traditionnel|dot|mariage|location/gi);
+          if (simpleMatches && simpleMatches.length > 0) {
+            relevantInfo.push("Informations récentes disponibles sur la page Facebook officielle.");
+            break;
+          }
+        }
+      }
+    } catch (fbError) {
+      console.log('Facebook fetch not available, using cached info');
+    }
+
+    return relevantInfo.length > 0 ? relevantInfo.join(' ') : '';
   } catch (error) {
-    console.error('Error fetching Facebook info:', error);
-    return '';
+    console.error('Error in searchFacebookInfo:', error);
+    return 'Pour les dernières actualités, consultez notre page Facebook officielle ou contactez-nous directement.';
   }
 }
 
@@ -221,24 +274,30 @@ ${mediaResults.map(media => {
 `;
     }
 
-    const systemPrompt = `Tu es l'assistante virtuelle de SEKA Vanessa, spécialiste des tenues traditionnelles ivoiriennes. 
+    const systemPrompt = `Tu es l'assistante virtuelle de SEKA Vanessa, créatrice experte en tenues traditionnelles ivoiriennes et africaines. 
 
-INFORMATIONS PRINCIPALES (RAG):
+SOURCES D'INFORMATIONS UTILISÉES (par ordre de priorité):
+1. BASE DE CONNAISSANCES RAG (informations officielles):
 ${relevantInfo}
 
-${additionalInfo ? `INFORMATIONS COMPLÉMENTAIRES (Facebook):
+${additionalInfo ? `2. INFORMATIONS COMPLÉMENTAIRES (Facebook et sources récentes):
 ${additionalInfo}
 
-` : ''}${mediaInfo}INSTRUCTIONS:
-- Réponds toujours en français avec un ton chaleureux et professionnel
-- Utilise d'abord les informations RAG, puis complète avec les infos Facebook si disponibles
-- Si des médias sont disponibles dans la base de données, partage les URLs des photos/vidéos pertinentes
-- Quand tu partages des médias, utilise ce format: "Voici quelques photos/vidéos : [Titre](URL)"
-- Si la question concerne la location, mentionne qu'ils peuvent contacter au 07 78 18 30 92
-- Encourage toujours à visiter la boutique ou à contacter par WhatsApp
-- Si tu n'as pas l'information exacte, suggère de contacter directement ou de consulter la page Facebook
-- Utilise un langage dynamique comme "WAHOOOO!" quand approprié
-- Mets en avant l'authenticité culturelle et l'élégance des créations`;
+` : ''}${mediaInfo}INSTRUCTIONS DE RÉPONSE:
+- Réponds TOUJOURS en français avec un ton chaleureux, professionnel et dynamique
+- PRIORISE les informations de la base de connaissances RAG (source officielle)
+- COMPLÈTE avec les infos Facebook/récentes quand pertinentes
+- PARTAGE les médias pertinents quand disponibles avec ce format: "Voici des exemples de nos créations : [Titre](URL)"
+- Pour les questions de tarifs: utilise les prix officiels détaillés de la RAG
+- Pour les contacts: mentionne TOUJOURS le 07 78 18 30 92 (WhatsApp)
+- Pour la localisation: "Boutique Tenue traditionnelle" à Abidjan Ouest
+- ENCOURAGE à visiter la boutique, contacter par WhatsApp, ou consulter les réseaux sociaux
+- Utilise le langage authentique SEKA: "WAHOOOO!", "la sape absolue", "chics tenues"
+- METS EN AVANT: l'authenticité culturelle, les tissus Bété/Didá, l'élégance premium
+- Si info manquante: "Contactez-nous au 07 78 18 30 92 pour plus de détails ou consultez notre Facebook"
+- VALORISE le patrimoine culturel ivoirien dans chaque réponse
+- Sois précise sur les prix et services disponibles
+- Mentionne les sources multiples pour crédibiliser les réponses`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

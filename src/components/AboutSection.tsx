@@ -10,7 +10,7 @@ const AboutSection = () => {
             <div className="relative overflow-hidden rounded-2xl shadow-luxury hover-lift">
               <img 
                 src="/lovable-uploads/8bf2f39d-7ec8-48af-8ded-68bd390ddcd5.png"
-                alt="Portrait professionnel de SEKA C. VANESSA, créatrice de mode traditionnelle africaine spécialisée en tenues ivoiriennes authentiques à Abidjan"
+                alt="Portrait de SEKA C. VANESSA"
                 className="w-full h-[600px] object-cover object-center"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-deep-black/20 to-transparent" />
@@ -33,9 +33,9 @@ const AboutSection = () => {
 
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Passionnée de culture et de mode, <strong>SEKA C. VANESSA</strong> met en valeur la richesse du patrimoine africain à travers ses créations. 
-                Sa boutique, <strong>TENUE TRADITIONNELLE</strong>, propose la <strong>location et la vente de tenues</strong> issues des traditions <strong>ivoiriennes</strong> 
-                (Akan, Gouro, Bété, Sénoufo…), mais aussi des créations inspirées des peuples <strong>Peulhs et nigérians</strong>.
+                Passionnée de culture et de mode, SEKA C. VANESSA met en valeur la richesse du patrimoine africain à travers ses créations. 
+                Sa boutique, TENUE TRADITIONNELLE, propose la location et la vente de tenues issues des traditions ivoiriennes 
+                (Akan, Gouro, Bété, Sénoufo…), mais aussi des créations inspirées des peuples Peulhs et nigérians.
               </p>
               
               {/* Logo de la boutique */}
@@ -43,7 +43,7 @@ const AboutSection = () => {
                 <div className="bg-white/5 p-6 rounded-2xl border border-luxury-gold/20">
                   <img 
                     src="/lovable-uploads/706179a4-8a32-4fcb-8ea8-f79e2066a54c.png?v=2"
-                    alt="Logo officiel TENUE TRADITIONNELLE - boutique de location et vente de tenues traditionnelles africaines de SEKA Vanessa à Abidjan"
+                    alt="Tenue Traditionnelle - Logo de la boutique"
                     className="h-16 w-auto object-contain max-w-[200px] mx-auto"
                     onError={(e) => {
                       console.log('Boutique logo failed to load');
@@ -59,7 +59,7 @@ const AboutSection = () => {
               <p>
                 Chaque tenue incarne une histoire, une identité et une élégance intemporelle. 
                 Formée aux techniques ancestrales de tissage et enrichie par une vision moderne du design, 
-                elle utilise des <strong>tissus authentiques</strong> comme le <strong>rafia tissé (Didá)</strong> et le <strong>tapa (Bété)</strong>.
+                elle utilise des tissus authentiques comme le rafia tissé (Didá) et le tapa (Bété).
               </p>
               
               <p>
@@ -67,19 +67,6 @@ const AboutSection = () => {
                 <span className="text-luxury-gold font-semibold italic"> « Sublimer la tradition africaine pour révéler la beauté authentique de chaque femme »</span>, 
                 en créant des pièces qui transcendent les générations.
               </p>
-              
-              {/* Texte SEO additionnel */}
-              <div className="bg-luxury-gold/5 rounded-lg p-6 border-l-4 border-luxury-gold mt-6">
-                <h3 className="font-playfair text-xl font-bold text-foreground mb-3">
-                  SEKA Vanessa - Référence en Côte d'Ivoire
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  <strong>SEKA Vanessa</strong> propose la <strong>location et la vente de tenues traditionnelles ivoiriennes</strong> 
-                  (pagne Didá, tapa Bété, kente Akan) et africaines, disponibles en <strong>Côte d'Ivoire et à l'international</strong>. 
-                  Basée à <strong>Abidjan</strong>, notre boutique est devenue LA référence pour les <strong>mariages africains</strong>, 
-                  <strong>cérémonies DOT</strong>, et événements culturels de prestige.
-                </p>
-              </div>
             </div>
 
             {/* Stats */}

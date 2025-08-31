@@ -16,43 +16,23 @@ const FAQSection = () => {
   const faqItems = [
     {
       icon: Calendar,
-      question: "Pour quels événements proposez-vous la location de tenues traditionnelles ?",
-      answer: "Nous couvrons tous types d'événements : DOT (Dot traditionnelle), mariages africains, baptêmes, anniversaires, shootings photo, clips vidéo, cérémonies culturelles, événements d'entreprise. Chaque occasion mérite une tenue exceptionnelle qui honore nos traditions ivoiriennes et africaines."
+      question: "Pour quels événements proposez-vous des tenues ?",
+      answer: "Nous couvrons tous types d'événements : DOT (Dot traditionnelle), mariages, baptêmes, anniversaires, shootings photo, clips vidéo, cérémonies culturelles, et bien plus encore. Chaque occasion mérite une tenue exceptionnelle qui honore nos traditions."
     },
     {
       icon: MessageCircle,
-      question: "Proposez-vous la vente ou uniquement la location de tenues africaines ?",
-      answer: "Nous proposons à la fois la location et la vente de tenues traditionnelles. La location (packages de 65 000 à 100 000 FCFA) est parfaite pour les événements spéciaux, tandis que nos créations sur mesure sont disponibles à l'achat pour celles qui souhaitent posséder une pièce unique."
+      question: "Est-ce uniquement de la location ou proposez-vous aussi la vente ?",
+      answer: "Nous proposons à la fois la location et la vente de tenues traditionnelles. La location est parfaite pour les événements spéciaux, tandis que nos créations sur mesure sont disponibles à l'achat pour celles qui souhaitent posséder une pièce unique."
     },
     {
       icon: Palette,
-      question: "Quelles cultures ivoiriennes et africaines sont représentées ?",
-      answer: "Nos collections couvrent les traditions ivoiriennes (Akan, Gouro, Bété, Sénoufo, Dida) ainsi que d'autres cultures africaines (Peulhs, Nigérianes, Burkinabé). Nous utilisons des tissus authentiques : pagne rafia tissé (Didá), tapa (Bété), bazin, kente, et autres textiles traditionnels de qualité premium."
+      question: "Quelles ethnies et cultures sont représentées dans vos créations ?",
+      answer: "Nos collections couvrent les traditions ivoiriennes (Akan, Gouro, Bété, Sénoufo, Dida) ainsi que d'autres cultures africaines comme les Peulhs et Nigérianes. Nous utilisons des tissus authentiques : rafia tissé (Didá), tapa (Bété), bazin, kente, et autres textiles traditionnels."
     },
     {
       icon: Phone,
-      question: "Comment réserver une tenue à Abidjan ou prendre rendez-vous ?",
-      answer: "Très simple ! Contactez-nous via WhatsApp au +225 05 66 99 77 85, par notre chatbot sur le site, ou sur Facebook. Nous discuterons de vos besoins, de l'événement, et vous proposerons les meilleures options selon votre style et budget."
-    },
-    {
-      icon: Calendar,
-      question: "Quels sont les délais pour la location d'une tenue traditionnelle ?",
-      answer: "Nous recommandons de réserver au moins 2 semaines avant votre événement pour garantir la disponibilité. Pour les créations sur mesure, comptez 3-4 semaines. Les ajustements sont inclus dans nos services pour un ajustement parfait."
-    },
-    {
-      icon: MessageCircle,
-      question: "Combien coûte la location d'une tenue traditionnelle ivoirienne ?",
-      answer: "Nos tarifs varient selon le type de tenue : Package Argent (65 000 FCFA), Package Or (80 000 FCFA), Package Diamant (100 000 FCFA). Tenues individuelles de 30 000 à 40 000 FCFA. Contactez-nous pour un devis personnalisé selon votre événement."
-    },
-    {
-      icon: Palette,
-      question: "Livrez-vous en dehors d'Abidjan et à l'international ?",
-      answer: "Oui ! Nous livrons dans toute la Côte d'Ivoire et proposons également nos services à l'international. Les frais de livraison sont calculés selon la destination. Notre clientèle s'étend au-delà des frontières ivoiriennes."
-    },
-    {
-      icon: Phone,
-      question: "Proposez-vous des tenues pour hommes et enfants ?",
-      answer: "Absolument ! Nos collections incluent des tenues traditionnelles pour toute la famille : hommes, femmes, enfants. Nous créons des ensembles harmonieux pour les couples et familles lors d'événements spéciaux comme les mariages ou cérémonies DOT."
+      question: "Comment réserver une tenue ou prendre rendez-vous ?",
+      answer: "Très simple ! Contactez-nous directement via WhatsApp au 07 78 18 30 92 ou à travers notre page Facebook. Nous discuterons de vos besoins, de l'événement, et nous vous proposerons les meilleures options selon votre style et votre budget."
     }
   ];
 

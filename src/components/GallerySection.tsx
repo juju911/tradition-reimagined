@@ -37,7 +37,7 @@ const GallerySection = () => {
       url: 'https://www.facebook.com/share/v/17J3tSqrwj/',
       type: 'facebook',
       category: 'DIDA',
-      thumbnail: '/src/assets/video-thumbnail-default.jpg'
+      thumbnail: '/lovable-uploads/b410a7b0-7102-4987-a19f-59e9bb89b0ae.png'
     },
     {
       id: 2,
@@ -46,7 +46,7 @@ const GallerySection = () => {
       url: 'https://www.facebook.com/share/v/1AqCBPAjR7/',
       type: 'facebook',
       category: 'AKAN',
-      thumbnail: '/src/assets/video-thumbnail-default.jpg'
+      thumbnail: '/lovable-uploads/c916c853-015a-4729-83c4-1d6f78e8bfcd.png'
     },
     {
       id: 3,
@@ -55,7 +55,7 @@ const GallerySection = () => {
       url: 'https://www.facebook.com/share/v/1A5cx84Uek/',
       type: 'facebook',
       category: 'AKAN',
-      thumbnail: '/src/assets/video-thumbnail-default.jpg'
+      thumbnail: '/lovable-uploads/234edd8d-1967-4e46-ab14-da14fbbcaf04.png'
     },
     {
       id: 4,
@@ -64,7 +64,7 @@ const GallerySection = () => {
       url: 'https://www.facebook.com/share/v/17724rJYuC/',
       type: 'facebook',
       category: 'AKAN',
-      thumbnail: '/src/assets/video-thumbnail-default.jpg'
+      thumbnail: '/lovable-uploads/c0ab1164-5434-4710-b698-3f22efbf5296.png'
     },
     {
       id: 5,
@@ -73,7 +73,7 @@ const GallerySection = () => {
       url: 'https://www.facebook.com/share/v/1ETdc9iofb/',
       type: 'facebook',
       category: 'GOURO',
-      thumbnail: '/src/assets/video-thumbnail-default.jpg'
+      thumbnail: '/lovable-uploads/d963ec1c-771a-4600-bd7e-5c3b3a314f1d.png'
     },
     {
       id: 6,
@@ -82,7 +82,7 @@ const GallerySection = () => {
       url: 'https://www.facebook.com/share/v/19tqFEAAKV/',
       type: 'facebook',
       category: 'Présentation',
-      thumbnail: '/src/assets/video-thumbnail-default.jpg'
+      thumbnail: '/lovable-uploads/1c16b39e-deb0-4ec0-b3dd-bd76f9d69754.png'
     },
     {
       id: 7,
@@ -91,7 +91,7 @@ const GallerySection = () => {
       url: 'https://www.facebook.com/share/v/1FzKcwcdzn/',
       type: 'facebook',
       category: 'AKAN',
-      thumbnail: '/src/assets/video-thumbnail-default.jpg'
+      thumbnail: '/lovable-uploads/b5bfa6d9-4881-4116-bfd2-890dbf088809.png'
     }
   ];
 

@@ -172,17 +172,17 @@ async function searchMediaInDatabase(question: string): Promise<any[]> {
     
     // Mots-clés étendus pour recherche de médias
     const mediaKeywords = [
-      'photo', 'image', 'voir', 'montrer', 'vidéo', 'galerie', 'média',
-      'créations', 'tenues', 'costume', 'robe', 'outfit', 'collection',
-      'dot', 'mariage', 'baptême', 'shooting', 'cérémonie', 'événement',
-      'bété', 'didá', 'akan', 'traditionnel', 'pagne', 'rafia', 'tapa',
-      'guere', 'senoufo', 'gouro', 'yacouba', 'peul', 'nigeriane', 'burkinabe',
-      'kente', 'bogolan', 'couple', 'individuelle', 'parapluie', 'accessoire',
-      'exemple', 'modèle', 'style', 'design', 'couleur', 'motif'
+      'photo', 'image', 'voir', 'montrer', 'montre', 'regarde', 'affiche',
+      'vidéo', 'galerie', 'média', 'créations', 'tenues', 'costume', 'robe', 
+      'outfit', 'collection', 'exemple', 'modèle', 'style', 'design'
     ];
+
+    // Types de tenues spécifiques
+    const tenues = ['akan', 'dida', 'bete', 'gouro', 'senoufo', 'peulh', 'nigerian', 'burkinabe'];
     
     // Vérifier si la question demande des médias
-    const needsMedia = mediaKeywords.some(keyword => lowerQuestion.includes(keyword));
+    const needsMedia = mediaKeywords.some(keyword => lowerQuestion.includes(keyword)) ||
+                      tenues.some(tenue => lowerQuestion.includes(tenue));
     
     if (!needsMedia) return [];
     
@@ -190,18 +190,27 @@ async function searchMediaInDatabase(question: string): Promise<any[]> {
     let query = supabase
       .from('media')
       .select('*')
-      .limit(6); // Limiter à 6 médias pour ne pas surcharger
+      .order('created_at', { ascending: false })
+      .limit(8);
     
-    // Recherche par mots-clés dans le titre, description et tags
-    const searchTerms = lowerQuestion.split(' ').filter(term => term.length > 2);
+    // Recherche par catégorie/type de tenue spécifique
+    const mentionedTenue = tenues.find(tenue => lowerQuestion.includes(tenue));
     
-    if (searchTerms.length > 0) {
-      // Recherche plus précise basée sur les termes
-      query = query.or(
-        searchTerms.map(term => 
-          `title.ilike.%${term}%,description.ilike.%${term}%,tags.cs.{${term}},category.cs.{${term}}`
-        ).join(',')
-      );
+    if (mentionedTenue) {
+      // Recherche spécifique par catégorie ou tags
+      query = query.or(`category.cs.{${mentionedTenue}},tags.cs.{${mentionedTenue}}`);
+    } else {
+      // Recherche plus large dans les tags et descriptions
+      const searchTerms = lowerQuestion.split(' ')
+        .filter(term => term.length > 2)
+        .filter(term => !['une', 'des', 'les', 'pour', 'avec', 'dans'].includes(term));
+      
+      if (searchTerms.length > 0) {
+        const searchConditions = searchTerms.map(term => 
+          `title.ilike.%${term}%,description.ilike.%${term}%,tags.cs.{${term}}`
+        ).join(',');
+        query = query.or(searchConditions);
+      }
     }
     
     const { data, error } = await query;
@@ -211,8 +220,16 @@ async function searchMediaInDatabase(question: string): Promise<any[]> {
       return [];
     }
     
-    console.log('Médias trouvés:', data?.length || 0);
-    return data || [];
+    // Traiter les résultats pour convertir les URLs relatives en URLs complètes
+    const processedData = data?.map(media => ({
+      ...media,
+      url: media.file_path.startsWith('/') 
+        ? `https://seka-vanessa.lovable.app${media.file_path}`
+        : media.file_path
+    })) || [];
+    
+    console.log('Médias trouvés et traités:', processedData.length);
+    return processedData;
     
   } catch (error) {
     console.error('Erreur dans searchMediaInDatabase:', error);
@@ -352,9 +369,13 @@ serve(async (req) => {
     if (mediaResults.length > 0) {
       mediaInfo = `MÉDIAS DISPONIBLES:
 ${mediaResults.map(media => {
-  const publicUrl = `${supabaseUrl}/storage/v1/object/public/media/${media.file_path}`;
-  return `- ${media.title}: ${media.description || 'Description non disponible'} (${media.file_type === 'image' ? 'Photo' : 'Vidéo'}) - URL: ${publicUrl}`;
+  return `- ${media.title}: ${media.description || 'Description non disponible'} (${media.file_type === 'image' ? 'Photo' : media.file_type === 'video' ? 'Vidéo' : 'Média'}) - URL: ${media.url}`;
 }).join('\n')}
+
+INSTRUCTIONS POUR LES MÉDIAS:
+- Les images s'afficheront automatiquement dans le chat
+- Pour les vidéos Facebook, mentionner qu'elles s'ouvrent sur Facebook
+- Encourager l'utilisateur à visiter la galerie pour voir plus de créations
 `;
     }
 
@@ -411,16 +432,18 @@ ${additionalInfo}
 
     const aiResponse = data.choices[0].message.content;
 
+    // Formater les médias pour le frontend avec les bonnes URLs
+    const formattedMedia = mediaResults.map(media => ({
+      id: media.id,
+      title: media.title,
+      description: media.description,
+      file_type: media.file_type,
+      url: media.url // Utiliser l'URL déjà traitée
+    }));
+
     return new Response(JSON.stringify({ 
       response: aiResponse,
-      media: mediaResults.map(media => ({
-        id: media.id,
-        title: media.title,
-        description: media.description,
-        file_path: media.file_path,
-        file_type: media.file_type,
-        url: `${supabaseUrl}/storage/v1/object/public/media/${media.file_path}`
-      })),
+      media: formattedMedia,
       source: pricingResults ? 'database_pricing' : (additionalInfo ? 'knowledge_base_with_facebook' : 'knowledge_base'),
       pricing_used: !!pricingResults
     }), {

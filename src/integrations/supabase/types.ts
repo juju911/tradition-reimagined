@@ -104,6 +104,39 @@ export type Database = {
         }
         Relationships: []
       }
+      pricing: {
+        Row: {
+          created_at: string
+          currency: string
+          id: string
+          is_active: boolean
+          price_couple: number | null
+          price_individual: number | null
+          tenue_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          id?: string
+          is_active?: boolean
+          price_couple?: number | null
+          price_individual?: number | null
+          tenue_type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          id?: string
+          is_active?: boolean
+          price_couple?: number | null
+          price_individual?: number | null
+          tenue_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       registrations: {
         Row: {
           created_at: string

@@ -89,6 +89,45 @@ EXPERTISE ET CRÉATIONS:
 - Vidéos et Reels populaires (>3000 vues sur Facebook)
 `;
 
+// Fonction pour rechercher les prix dans la base de données
+async function searchPricingInDatabase(question: string): Promise<any[]> {
+  try {
+    console.log('Searching for pricing in database with question:', question);
+    
+    const lowerQuestion = question.toLowerCase();
+    
+    // Mots-clés pour recherche de prix
+    const pricingKeywords = [
+      'prix', 'tarif', 'coût', 'combien', 'price', 'cost',
+      'package', 'location', 'louer', 'rent'
+    ];
+    
+    // Vérifier si la question demande des prix
+    const needsPricing = pricingKeywords.some(keyword => lowerQuestion.includes(keyword));
+    
+    if (!needsPricing) return [];
+    
+    // Rechercher tous les prix actifs
+    const { data, error } = await supabase
+      .from('pricing')
+      .select('*')
+      .eq('is_active', true)
+      .order('tenue_type', { ascending: true });
+    
+    if (error) {
+      console.error('Erreur lors de la recherche de prix:', error);
+      return [];
+    }
+    
+    console.log('Prix trouvés:', data?.length || 0);
+    return data || [];
+    
+  } catch (error) {
+    console.error('Erreur dans searchPricingInDatabase:', error);
+    return [];
+  }
+}
+
 // Fonction pour rechercher des médias dans la base de données
 async function searchMediaInDatabase(question: string): Promise<any[]> {
   try {
@@ -252,15 +291,33 @@ serve(async (req) => {
     let relevantInfo = findRelevantInfo(message);
     let additionalInfo = '';
     
-    // Étape 2: Recherche de médias dans la base de données
+    // Étape 2: Recherche des prix dans la base de données (prioritaire)
+    console.log('Searching for pricing in database...');
+    const pricingResults = await searchPricingInDatabase(message);
+    
+    // Étape 3: Recherche de médias dans la base de données
     console.log('Searching for media in database...');
     const mediaResults = await searchMediaInDatabase(message);
     
-    // Étape 3: Si l'info semble incomplète, chercher sur Facebook
+    // Étape 4: Si l'info semble incomplète, chercher sur Facebook (en dernier recours)
     const needsMoreInfo = checkIfNeedsMoreInfo(message, relevantInfo);
     if (needsMoreInfo) {
       console.log('Searching for additional info on Facebook...');
       additionalInfo = await searchFacebookInfo(message);
+    }
+
+    // Construire les informations sur les prix trouvés
+    let pricingInfo = '';
+    if (pricingResults.length > 0) {
+      pricingInfo = `\nTARIFS OFFICIELS EN BASE DE DONNÉES:
+${pricingResults.map(price => {
+  let priceText = `- Tenue ${price.tenue_type}:`;
+  if (price.price_couple) priceText += ` Couple ${price.price_couple.toLocaleString()} ${price.currency}`;
+  if (price.price_individual) priceText += ` / Individuelle ${price.price_individual.toLocaleString()} ${price.currency}`;
+  return priceText;
+}).join('\n')}
+
+`;
     }
 
     // Construire les informations sur les médias trouvés
@@ -280,15 +337,16 @@ SOURCES D'INFORMATIONS UTILISÉES (par ordre de priorité):
 1. BASE DE CONNAISSANCES RAG (informations officielles):
 ${relevantInfo}
 
-${additionalInfo ? `2. INFORMATIONS COMPLÉMENTAIRES (Facebook et sources récentes):
+${pricingInfo ? `2. TARIFS OFFICIELS (Base de données - PRIORITÉ ABSOLUE pour les prix):
+${pricingInfo}` : ''}${additionalInfo ? `3. INFORMATIONS COMPLÉMENTAIRES (Facebook et sources récentes):
 ${additionalInfo}
 
 ` : ''}${mediaInfo}INSTRUCTIONS DE RÉPONSE:
 - Réponds TOUJOURS en français avec un ton chaleureux, professionnel et dynamique
-- PRIORISE les informations de la base de connaissances RAG (source officielle)
-- COMPLÈTE avec les infos Facebook/récentes quand pertinentes
+- ORDRE DE PRIORITÉ STRICT: 1) RAG, 2) Base de données (prix), 3) Knowledge base, 4) Facebook (dernier recours)
+- Pour les questions de TARIFS: utilise EXCLUSIVEMENT les prix de la base de données (section 2) car ils sont officiels et à jour
 - PARTAGE les médias pertinents quand disponibles avec ce format: "Voici des exemples de nos créations : [Titre](URL)"
-- Pour les questions de tarifs: utilise les prix officiels détaillés de la RAG
+- COMPLÈTE avec les infos Facebook uniquement si les autres sources sont insuffisantes
 - Pour les contacts: mentionne TOUJOURS le 07 78 18 30 92 (WhatsApp)
 - Pour la localisation: "Boutique Tenue traditionnelle" à Abidjan Ouest
 - ENCOURAGE à visiter la boutique, contacter par WhatsApp, ou consulter les réseaux sociaux
@@ -327,6 +385,13 @@ ${additionalInfo}
 
     return new Response(JSON.stringify({ 
       response: aiResponse,
+      pricing: pricingResults.map(price => ({
+        id: price.id,
+        tenue_type: price.tenue_type,
+        price_couple: price.price_couple,
+        price_individual: price.price_individual,
+        currency: price.currency
+      })),
       media: mediaResults.map(media => ({
         id: media.id,
         title: media.title,
@@ -335,7 +400,7 @@ ${additionalInfo}
         file_type: media.file_type,
         url: `${supabaseUrl}/storage/v1/object/public/media/${media.file_path}`
       })),
-      source: additionalInfo ? 'knowledge_base_with_facebook' : 'knowledge_base' 
+      source: pricingResults.length > 0 ? 'database_with_rag' : (additionalInfo ? 'knowledge_base_with_facebook' : 'knowledge_base')
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

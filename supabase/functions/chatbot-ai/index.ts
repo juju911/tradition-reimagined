@@ -31,19 +31,6 @@ PACKAGES LOCATION DISPONIBLES:
 - PACKAGE OR (3 tenues): 1 tenue de présentation + 1 tenue couple AKAN Or + 1 tenue couple Bété ou DIDA - Prix: 80 000 F CFA  
 - PACKAGE DIAMAND (3 tenues): 1 tenue AKAN couple DIAMAND + Parapluie traditionnelle + 1 tenue couple Bété + 1 tenue couple au choix - Prix: À discuter
 
-TARIFS DÉTAILLÉS PAR TYPE DE TENUE:
-- Tenue AKAN: Couple 70 000 F / Individuelle 40 000 F
-- Tenue GUERE: Couple 50 000 F / Individuelle 30 000 F  
-- Tenue SENOUFO: Couple 50 000 F / Individuelle 30 000 F
-- Tenue GOURO: Couple 60 000 F / Individuelle 35 000 F
-- Tenue YACOUBA: Couple 50 000 F / Individuelle 30 000 F
-- Tenue PEUL: Couple 60 000 F / Individuelle 35 000 F
-- Tenue NIGERIANE: Couple 60 000 F / Individuelle 35 000 F
-- Tenue BURKINABE: Couple 50 000 F / Individuelle 30 000 F
-- Tenue DIDA: Couple 70 000 F / Individuelle 40 000 F
-- Tenue BETE: Couple 70 000 F / Individuelle 40 000 F
-- DEMOISELLE/GARÇON D'HONNEUR: 20 000 F
-
 TYPES DE TENUES DISPONIBLES:
 - Tenues de cérémonie (DOT, mariage, baptême)
 - Tenues pour événements photo (shooting, clips)
@@ -90,41 +77,89 @@ EXPERTISE ET CRÉATIONS:
 `;
 
 // Fonction pour rechercher les prix dans la base de données
-async function searchPricingInDatabase(question: string): Promise<any[]> {
+async function searchPricingInDatabase(question: string): Promise<string> {
   try {
-    console.log('Searching for pricing in database with question:', question);
-    
     const lowerQuestion = question.toLowerCase();
     
     // Mots-clés pour recherche de prix
     const pricingKeywords = [
-      'prix', 'tarif', 'coût', 'combien', 'price', 'cost',
-      'package', 'location', 'louer', 'rent'
+      'prix', 'tarif', 'coût', 'combien', 'coute', 'coûte', 'montant',
+      'package', 'location', 'louer', 'argent'
     ];
     
-    // Vérifier si la question demande des prix
+    // Vérifier si la question concerne les prix
     const needsPricing = pricingKeywords.some(keyword => lowerQuestion.includes(keyword));
     
-    if (!needsPricing) return [];
+    if (!needsPricing) return '';
     
-    // Rechercher tous les prix actifs
-    const { data, error } = await supabase
+    // Récupérer tous les prix
+    const { data: pricing, error } = await supabase
       .from('pricing')
       .select('*')
       .eq('is_active', true)
-      .order('tenue_type', { ascending: true });
+      .order('tenue_type');
     
     if (error) {
-      console.error('Erreur lors de la recherche de prix:', error);
-      return [];
+      console.error('Erreur lors de la récupération des prix:', error);
+      return '';
     }
     
-    console.log('Prix trouvés:', data?.length || 0);
-    return data || [];
+    if (!pricing || pricing.length === 0) return '';
+    
+    // Rechercher des types de tenues spécifiques dans la question
+    const mentionedTypes = [];
+    for (const price of pricing) {
+      const typeLower = price.tenue_type.toLowerCase();
+      if (lowerQuestion.includes(typeLower) || 
+          lowerQuestion.includes(typeLower.replace('_', ' ')) ||
+          (typeLower === 'demoiselle_honneur' && (lowerQuestion.includes('demoiselle') || lowerQuestion.includes('honneur'))) ||
+          (typeLower === 'garcon_honneur' && (lowerQuestion.includes('garçon') || lowerQuestion.includes('garcon')))) {
+        mentionedTypes.push(price);
+      }
+    }
+    
+    // Si des types spécifiques sont mentionnés, retourner seulement ceux-ci
+    if (mentionedTypes.length > 0) {
+      let pricingInfo = 'TARIFS OFFICIELS (Base de données):\n';
+      for (const price of mentionedTypes) {
+        const typeName = price.tenue_type.replace('_', ' ');
+        pricingInfo += `- Tenue ${typeName}: `;
+        if (price.price_couple) {
+          pricingInfo += `Couple ${price.price_couple.toLocaleString()} ${price.currency}`;
+        }
+        if (price.price_individual) {
+          if (price.price_couple) pricingInfo += ' / ';
+          pricingInfo += `Individuelle ${price.price_individual.toLocaleString()} ${price.currency}`;
+        }
+        pricingInfo += '\n';
+      }
+      return pricingInfo;
+    }
+    
+    // Si question générale sur les prix, retourner tous les tarifs
+    if (lowerQuestion.includes('tous') || lowerQuestion.includes('liste') || 
+        lowerQuestion.includes('prix') || lowerQuestion.includes('tarif')) {
+      let pricingInfo = 'TARIFS COMPLETS OFFICIELS (Base de données):\n';
+      for (const price of pricing) {
+        const typeName = price.tenue_type.replace('_', ' ');
+        pricingInfo += `- Tenue ${typeName}: `;
+        if (price.price_couple) {
+          pricingInfo += `Couple ${price.price_couple.toLocaleString()} ${price.currency}`;
+        }
+        if (price.price_individual) {
+          if (price.price_couple) pricingInfo += ' / ';
+          pricingInfo += `Individuelle ${price.price_individual.toLocaleString()} ${price.currency}`;
+        }
+        pricingInfo += '\n';
+      }
+      return pricingInfo;
+    }
+    
+    return '';
     
   } catch (error) {
     console.error('Erreur dans searchPricingInDatabase:', error);
-    return [];
+    return '';
   }
 }
 
@@ -289,9 +324,8 @@ serve(async (req) => {
 
     // Étape 1: Recherche dans la base de connaissances RAG
     let relevantInfo = findRelevantInfo(message);
-    let additionalInfo = '';
     
-    // Étape 2: Recherche des prix dans la base de données (prioritaire)
+    // Étape 2: Recherche des prix dans la base de données (PRIORITÉ)
     console.log('Searching for pricing in database...');
     const pricingResults = await searchPricingInDatabase(message);
     
@@ -299,31 +333,24 @@ serve(async (req) => {
     console.log('Searching for media in database...');
     const mediaResults = await searchMediaInDatabase(message);
     
-    // Étape 4: Si l'info semble incomplète, chercher sur Facebook (en dernier recours)
+    // Étape 4: Si l'info semble incomplète, chercher sur Facebook (DERNIER RECOURS)
+    let additionalInfo = '';
     const needsMoreInfo = checkIfNeedsMoreInfo(message, relevantInfo);
-    if (needsMoreInfo) {
-      console.log('Searching for additional info on Facebook...');
+    if (needsMoreInfo && !pricingResults) {
+      console.log('Searching for additional info on Facebook as last resort...');
       additionalInfo = await searchFacebookInfo(message);
     }
 
     // Construire les informations sur les prix trouvés
     let pricingInfo = '';
-    if (pricingResults.length > 0) {
-      pricingInfo = `\nTARIFS OFFICIELS EN BASE DE DONNÉES:
-${pricingResults.map(price => {
-  let priceText = `- Tenue ${price.tenue_type}:`;
-  if (price.price_couple) priceText += ` Couple ${price.price_couple.toLocaleString()} ${price.currency}`;
-  if (price.price_individual) priceText += ` / Individuelle ${price.price_individual.toLocaleString()} ${price.currency}`;
-  return priceText;
-}).join('\n')}
-
-`;
+    if (pricingResults) {
+      pricingInfo = `\n${pricingResults}\n`;
     }
 
     // Construire les informations sur les médias trouvés
     let mediaInfo = '';
     if (mediaResults.length > 0) {
-      mediaInfo = `\nMÉDIAS DISPONIBLES:
+      mediaInfo = `MÉDIAS DISPONIBLES:
 ${mediaResults.map(media => {
   const publicUrl = `${supabaseUrl}/storage/v1/object/public/media/${media.file_path}`;
   return `- ${media.title}: ${media.description || 'Description non disponible'} (${media.file_type === 'image' ? 'Photo' : 'Vidéo'}) - URL: ${publicUrl}`;
@@ -337,25 +364,26 @@ SOURCES D'INFORMATIONS UTILISÉES (par ordre de priorité):
 1. BASE DE CONNAISSANCES RAG (informations officielles):
 ${relevantInfo}
 
-${pricingInfo ? `2. TARIFS OFFICIELS (Base de données - PRIORITÉ ABSOLUE pour les prix):
-${pricingInfo}` : ''}${additionalInfo ? `3. INFORMATIONS COMPLÉMENTAIRES (Facebook et sources récentes):
+${pricingInfo ? `2. TARIFS OFFICIELS (Base de données - SOURCE PRINCIPALE pour les prix):
+${pricingInfo}` : ''}
+
+${additionalInfo ? `3. INFORMATIONS COMPLÉMENTAIRES (Facebook - dernier recours):
 ${additionalInfo}
 
-` : ''}${mediaInfo}INSTRUCTIONS DE RÉPONSE:
+` : ''}${mediaInfo}INSTRUCTIONS DE RÉPONSE HIÉRARCHISÉE:
 - Réponds TOUJOURS en français avec un ton chaleureux, professionnel et dynamique
-- ORDRE DE PRIORITÉ STRICT: 1) RAG, 2) Base de données (prix), 3) Knowledge base, 4) Facebook (dernier recours)
-- Pour les questions de TARIFS: utilise EXCLUSIVEMENT les prix de la base de données (section 2) car ils sont officiels et à jour
-- PARTAGE les médias pertinents quand disponibles avec ce format: "Voici des exemples de nos créations : [Titre](URL)"
-- COMPLÈTE avec les infos Facebook uniquement si les autres sources sont insuffisantes
+- ORDRE DE PRIORITÉ DES SOURCES: 1) RAG/Knowledge Base, 2) Base de données (prix), 3) Médias, 4) Facebook (dernier recours uniquement)
+- POUR LES PRIX: Utilise EXCLUSIVEMENT les tarifs de la base de données (source officielle), jamais les prix de la RAG
+- PARTAGE les médias pertinents quand disponibles: "Voici des exemples de nos créations : [Titre](URL)"
 - Pour les contacts: mentionne TOUJOURS le 07 78 18 30 92 (WhatsApp)
 - Pour la localisation: "Boutique Tenue traditionnelle" à Abidjan Ouest
 - ENCOURAGE à visiter la boutique, contacter par WhatsApp, ou consulter les réseaux sociaux
 - Utilise le langage authentique SEKA: "WAHOOOO!", "la sape absolue", "chics tenues"
 - METS EN AVANT: l'authenticité culturelle, les tissus Bété/Didá, l'élégance premium
-- Si info manquante: "Contactez-nous au 07 78 18 30 92 pour plus de détails ou consultez notre Facebook"
+- Si info manquante: "Contactez-nous au 07 78 18 30 92 pour plus de détails"
 - VALORISE le patrimoine culturel ivoirien dans chaque réponse
-- Sois précise sur les prix et services disponibles
-- Mentionne les sources multiples pour crédibiliser les réponses`;
+- Sois précise sur les prix officiels de la base de données
+- Indique clairement les sources utilisées pour crédibiliser les réponses`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -385,13 +413,6 @@ ${additionalInfo}
 
     return new Response(JSON.stringify({ 
       response: aiResponse,
-      pricing: pricingResults.map(price => ({
-        id: price.id,
-        tenue_type: price.tenue_type,
-        price_couple: price.price_couple,
-        price_individual: price.price_individual,
-        currency: price.currency
-      })),
       media: mediaResults.map(media => ({
         id: media.id,
         title: media.title,
@@ -400,7 +421,8 @@ ${additionalInfo}
         file_type: media.file_type,
         url: `${supabaseUrl}/storage/v1/object/public/media/${media.file_path}`
       })),
-      source: pricingResults.length > 0 ? 'database_with_rag' : (additionalInfo ? 'knowledge_base_with_facebook' : 'knowledge_base')
+      source: pricingResults ? 'database_pricing' : (additionalInfo ? 'knowledge_base_with_facebook' : 'knowledge_base'),
+      pricing_used: !!pricingResults
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

@@ -53,23 +53,31 @@ const Footer = () => {
     <footer className="bg-gradient-elegant text-white">
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Brand Logo */}
+          {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center space-x-3 mb-6">
-              <img 
-                src="/lovable-uploads/706179a4-8a32-4fcb-8ea8-f79e2066a54c.png?v=2"
-                alt="Tenue Traditionnelle - SEKA C. VANESSA"
-                className="h-20 w-auto object-contain max-w-[250px]"
-                onError={(e) => {
-                  console.log('Footer logo failed to load');
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
+            <div className="mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-luxury-gold mb-2">
+                SEKA C. VANESSA
+              </h3>
+              <p className="text-white/60 text-sm mb-4">Portfolio & Activités</p>
+              
+              {/* Logo de la boutique dans le footer */}
+              <div className="flex items-center space-x-3 mb-4">
+                <img 
+                  src="/lovable-uploads/706179a4-8a32-4fcb-8ea8-f79e2066a54c.png?v=2"
+                  alt="Tenue Traditionnelle - Boutique de SEKA C. VANESSA"
+                  className="h-16 w-auto object-contain max-w-[200px]"
+                  onError={(e) => {
+                    console.log('Footer logo failed to load');
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
             </div>
             
             <p className="text-white/80 leading-relaxed mb-6 max-w-md">
-              Passionnée par l'art vestimentaire africain, je crée des pièces uniques 
-              qui célèbrent notre riche héritage culturel avec une touche de modernité.
+              Créatrice passionnée spécialisée dans la location et vente de tenues traditionnelles. 
+              Je valorise notre riche héritage culturel africain avec une touche de modernité à travers ma boutique TENUE TRADITIONNELLE.
             </p>
             
             <div className="flex space-x-4">

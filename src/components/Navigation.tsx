@@ -33,17 +33,11 @@ const Navigation = () => {
       }`}>
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo */}
+            {/* Nom Portfolio */}
             <div className="flex items-center">
-              <img 
-                src="/lovable-uploads/706179a4-8a32-4fcb-8ea8-f79e2066a54c.png?v=2"
-                alt="Tenue Traditionnelle - SEKA C. VANESSA"
-                className="h-12 w-auto object-contain max-w-[200px]"
-                onError={(e) => {
-                  console.log('Logo failed to load');
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
+              <h1 className="font-playfair text-2xl md:text-3xl font-bold text-luxury-gold">
+                SEKA C. Vanessa
+              </h1>
             </div>
 
             {/* Desktop Menu */}

@@ -38,6 +38,24 @@ const AboutSection = () => {
                 (Akan, Gouro, Bété, Sénoufo…), mais aussi des créations inspirées des peuples Peulhs et nigérians.
               </p>
               
+              {/* Logo de la boutique */}
+              <div className="flex justify-center py-6">
+                <div className="bg-white/5 p-6 rounded-2xl border border-luxury-gold/20">
+                  <img 
+                    src="/lovable-uploads/706179a4-8a32-4fcb-8ea8-f79e2066a54c.png?v=2"
+                    alt="Tenue Traditionnelle - Logo de la boutique"
+                    className="h-16 w-auto object-contain max-w-[200px] mx-auto"
+                    onError={(e) => {
+                      console.log('Boutique logo failed to load');
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  <p className="text-center text-sm text-luxury-gold mt-2 font-medium">
+                    TENUE TRADITIONNELLE - Sa boutique
+                  </p>
+                </div>
+              </div>
+              
               <p>
                 Chaque tenue incarne une histoire, une identité et une élégance intemporelle. 
                 Formée aux techniques ancestrales de tissage et enrichie par une vision moderne du design, 

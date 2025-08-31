@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Eye, Heart, Play, ExternalLink, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const GallerySection = () => {
@@ -9,6 +9,28 @@ const GallerySection = () => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   const [showAllVideos, setShowAllVideos] = useState(false);
   const [showAllAudios, setShowAllAudios] = useState(false);
+  const [views, setViews] = useState<{[key: number]: number}>({});
+
+  // Charger les vues depuis localStorage au montage
+  useEffect(() => {
+    const savedViews = localStorage.getItem('gallery-views');
+    if (savedViews) {
+      setViews(JSON.parse(savedViews));
+    }
+  }, []);
+
+  // Sauvegarder les vues dans localStorage quand elles changent
+  useEffect(() => {
+    localStorage.setItem('gallery-views', JSON.stringify(views));
+  }, [views]);
+
+  // Fonction pour incrémenter les vues
+  const incrementViews = (imageId: number) => {
+    setViews(prev => ({
+      ...prev,
+      [imageId]: (prev[imageId] || 0) + 1
+    }));
+  };
 
   const tabs = [
     { id: 'photos', name: 'Photos', icon: Eye },
@@ -301,6 +323,11 @@ const GallerySection = () => {
   const openModal = (index: number) => {
     const filtered = filteredItems;
     const actualIndex = galleryItems.findIndex(item => item.id === filtered[index].id);
+    const imageId = filtered[index].id;
+    
+    // Incrémenter les vues
+    incrementViews(imageId);
+    
     setSelectedImageIndex(actualIndex);
     setIsModalOpen(true);
   };
@@ -420,9 +447,15 @@ const GallerySection = () => {
                       <p className="text-white/80 text-sm mb-4">{item.description}</p>
                       
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2 text-luxury-gold">
-                          <Heart size={16} />
-                          <span className="text-sm">{item.likes}</span>
+                        <div className="flex items-center space-x-4">
+                          <div className="flex items-center space-x-2 text-luxury-gold">
+                            <Heart size={16} />
+                            <span className="text-sm">{item.likes}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-white/70">
+                            <Eye size={16} />
+                            <span className="text-sm">{views[item.id] || 0} vues</span>
+                          </div>
                         </div>
                         
                         <button 
@@ -706,9 +739,15 @@ const GallerySection = () => {
                   <p className="text-white/80 text-lg">
                     {galleryItems[selectedImageIndex].description}
                   </p>
-                  <div className="flex items-center justify-center space-x-2 text-luxury-gold mt-4">
-                    <Heart size={18} />
-                    <span>{galleryItems[selectedImageIndex].likes} J'aime</span>
+                  <div className="flex items-center justify-center space-x-6 text-luxury-gold mt-4">
+                    <div className="flex items-center space-x-2">
+                      <Heart size={18} />
+                      <span>{galleryItems[selectedImageIndex].likes} J'aime</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Eye size={18} />
+                      <span>{views[galleryItems[selectedImageIndex].id] || 0} vues</span>
+                    </div>
                   </div>
                 </div>
 

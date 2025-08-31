@@ -54,13 +54,13 @@ const PacksSection = () => {
         {/* Header */}
         <div className="text-center mb-20">
           <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6 text-foreground">
-            Location de Tenues Traditionnelles
-            <span className="text-luxury-gold animate-gold-shimmer block">Packages Premium</span>
+            Packages Location de Tenues Traditionnelles
+            <span className="text-luxury-gold animate-gold-shimmer block">Ivoiriennes Premium</span>
           </h2>
           <div className="w-24 h-1 bg-luxury-gold mx-auto mb-8" />
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Des formules complètes pensées pour répondre à tous vos besoins, 
-            du plus simple au plus prestigieux
+            Des formules complètes de <strong>location de tenues traditionnelles</strong> pensées pour répondre à tous vos besoins, 
+            du plus simple au plus prestigieux. Service premium à <strong>Abidjan</strong>, Côte d'Ivoire.
           </p>
         </div>
 
@@ -135,7 +135,7 @@ const PacksSection = () => {
           <div className="flex items-center justify-center mb-4">
             <Phone className="w-6 h-6 text-luxury-gold mr-3" />
             <h3 className="font-playfair text-2xl font-bold text-foreground">
-              Nos Tarifs de Location
+              Tarifs Location Tenues Traditionnelles Ivoiriennes
             </h3>
           </div>
           
@@ -159,11 +159,11 @@ const PacksSection = () => {
           </div>
           
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            <strong>Tenues individuelles :</strong> Akan & Bété & Dida (couple : 70 000 F, individuelle : 40 000 F), 
+            <strong>Tenues traditionnelles individuelles à Abidjan :</strong> Akan & Bété & Dida (couple : 70 000 F, individuelle : 40 000 F), 
             Gouro & Peulh & Nigériane (couple : 60 000 F, individuelle : 35 000 F), 
             Guéré & Sénoufo & Yacouba & Burkinabé (couple : 50 000 F, individuelle : 30 000 F).
             <br/><br/>
-            Contactez-nous via le ChatBot, WhatsApp, appel ou email pour un devis personnalisé.
+            <strong>Contactez SEKA Vanessa</strong> via le ChatBot IA, WhatsApp, appel téléphonique ou email pour un <strong>devis personnalisé</strong> pour votre <strong>mariage africain</strong> ou <strong>cérémonie DOT</strong>.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 

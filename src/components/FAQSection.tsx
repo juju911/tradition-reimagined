@@ -31,8 +31,8 @@ const FAQSection = () => {
     },
     {
       icon: Phone,
-      question: "Comment réserver une tenue à Abidjan ou prendre rendez-vous ?",
-      answer: "Très simple ! Contactez-nous via WhatsApp au +225 05 66 99 77 85, par notre chatbot sur le site, ou sur Facebook. Nous discuterons de vos besoins, de l'événement, et vous proposerons les meilleures options selon votre style et budget."
+      question: "Comment louer une tenue traditionnelle ivoirienne à Abidjan ?",
+      answer: "Très simple ! Contactez-nous via WhatsApp au +225 05 66 99 77 85, par notre chatbot sur le site, ou sur Facebook. Nous discuterons de vos besoins, de l'événement (mariage africain, cérémonie DOT, baptême), et vous proposerons les meilleures options selon votre style et budget. Nous sommes basés à Yopougon Sicogi - Pont Vagabond, Abidjan."
     },
     {
       icon: Calendar,
@@ -41,8 +41,8 @@ const FAQSection = () => {
     },
     {
       icon: MessageCircle,
-      question: "Combien coûte la location d'une tenue traditionnelle ivoirienne ?",
-      answer: "Nos tarifs varient selon le type de tenue : Package Argent (65 000 FCFA), Package Or (80 000 FCFA), Package Diamant (100 000 FCFA). Tenues individuelles de 30 000 à 40 000 FCFA. Contactez-nous pour un devis personnalisé selon votre événement."
+      question: "Quels sont vos tarifs de location pour tenues traditionnelles africaines ?",
+      answer: "Nos tarifs varient selon le type de tenue et le package choisi : Package Argent (65 000 FCFA - 3 tenues), Package Or (80 000 FCFA - inclut tenues AKAN or), Package Diamant (100 000 FCFA - avec parapluie traditionnel). Tenues individuelles de 30 000 à 40 000 FCFA. Demoiselles/garçons d'honneur : 20 000 FCFA. Contactez-nous pour un devis personnalisé selon votre événement et vos besoins."
     },
     {
       icon: Palette,
@@ -61,12 +61,12 @@ const FAQSection = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6 text-foreground">
-            Questions 
-            <span className="text-luxury-gold animate-gold-shimmer block">Fréquentes</span>
+            Questions Fréquentes sur la 
+            <span className="text-luxury-gold animate-gold-shimmer block">Location de Tenues Traditionnelles</span>
           </h2>
           <div className="w-24 h-1 bg-luxury-gold mx-auto mb-8" />
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Découvrez tout ce que vous devez savoir sur nos services de location et création de tenues traditionnelles
+            Tout ce que vous devez savoir sur nos services de location et création de tenues traditionnelles ivoiriennes à Abidjan
           </p>
         </div>
 

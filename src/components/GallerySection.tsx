@@ -339,9 +339,9 @@ const GallerySection = () => {
           </h2>
           <div className="w-24 h-1 bg-luxury-gold mx-auto mb-8" />
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Découvrez notre collection de <strong>tenues traditionnelles ivoiriennes</strong> en location et vente : 
-            <strong>pagne Didá, tapa Bété, kente Akan</strong> et créations africaines authentiques pour mariages, 
-            cérémonies DOT et événements culturels à Abidjan et international.
+            Découvrez notre collection exclusive de <strong>tenues traditionnelles ivoiriennes</strong> en location et vente : 
+            <strong>pagne Didá, tapa Bété, kente Akan</strong> et créations africaines authentiques pour <strong>mariages africains</strong>, 
+            <strong>cérémonies DOT</strong> et événements culturels à <strong>Abidjan</strong>, Côte d'Ivoire et international.
           </p>
         </div>
 

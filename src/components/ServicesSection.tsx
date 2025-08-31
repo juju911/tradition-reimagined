@@ -5,23 +5,23 @@ const ServicesSection = () => {
   const services = [
     {
       icon: Crown,
-      title: 'Location de Tenues Traditionnelles',
-      description: 'Découvrez notre collection exclusive de tenues traditionnelles ivoiriennes authentiques.',
-      details: ['Tenues Akan, Gouro, Bété, Sénoufo', 'Tissus nobles et authentiques', 'Toutes tailles disponibles', 'Accessoires inclus'],
+      title: 'Location de Tenues Traditionnelles Ivoiriennes',
+      description: 'Découvrez notre collection exclusive de tenues traditionnelles ivoiriennes authentiques : pagne Didá, tapa Bété, kente Akan.',
+      details: ['Tenues Akan, Gouro, Bété, Sénoufo, Dida', 'Tissus nobles et authentiques', 'Toutes tailles disponibles', 'Accessoires traditionnels inclus'],
       color: 'from-luxury-gold to-primary-hover'
     },
     {
       icon: Sparkles,
-      title: 'Tenues Africaines Modernes',
-      description: 'Location et vente de magnifiques tenues africaines contemporaines pour tous vos événements.',
-      details: ['Styles Peulhs et Nigérians', 'Créations modernes', 'Qualité premium', 'Design tendance'],
+      title: 'Créations Modernes Inspirées de la Tradition',
+      description: 'Location et vente de magnifiques tenues africaines contemporaines pour mariages, cérémonies et événements culturels.',
+      details: ['Styles Peulhs et Nigérians', 'Créations sur mesure', 'Qualité premium luxe', 'Design moderne et tendance'],
       color: 'from-deep-black to-foreground'
     },
     {
       icon: Users,
-      title: 'Habillage des Mariés',
-      description: 'Accompagnement complet pour sublimer les mariés lors de leur cérémonie traditionnelle.',
-      details: ['Consultation personnalisée', 'Coordination parfaite', 'Mise en valeur des mariés', 'Service haut de gamme'],
+      title: 'Service Spécial Mariage & Cérémonies',
+      description: 'Accompagnement complet pour sublimer les mariés lors de cérémonies DOT et mariages traditionnels africains.',
+      details: ['Consultation personnalisée', 'Coordination parfaite couples', 'Mise en valeur authentique', 'Service haut de gamme Abidjan'],
       color: 'from-luxury-gold to-primary-hover'
     },
     {
@@ -39,12 +39,12 @@ const ServicesSection = () => {
         {/* Header */}
         <div className="text-center mb-20">
           <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6 text-foreground">
-            Nos <span className="text-luxury-gold animate-gold-shimmer">Services</span>
+            Location & Vente de <span className="text-luxury-gold animate-gold-shimmer">Tenues Traditionnelles</span>
           </h2>
           <div className="w-24 h-1 bg-luxury-gold mx-auto mb-8" />
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Découvrez notre gamme complète de services pour sublimer vos moments précieux
-            avec l'élégance de la tradition africaine
+            Découvrez notre gamme complète de services pour sublimer vos mariages africains, 
+            cérémonies DOT et événements culturels avec l'élégance authentique de la tradition ivoirienne
           </p>
         </div>
 
@@ -89,10 +89,10 @@ const ServicesSection = () => {
         {/* CTA Section */}
         <div className="text-center p-8 bg-gradient-elegant rounded-2xl shadow-luxury">
           <h3 className="font-playfair text-3xl font-bold text-white mb-4">
-            Besoin d'un conseil personnalisé ?
+            Besoin d'un conseil pour votre mariage africain ?
           </h3>
           <p className="text-white/80 mb-8 text-lg">
-            Notre équipe d'experts est là pour vous accompagner dans le choix de votre tenue parfaite
+            Notre équipe d'experts à Abidjan vous accompagne dans le choix de votre tenue traditionnelle parfaite pour votre cérémonie DOT ou mariage
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 

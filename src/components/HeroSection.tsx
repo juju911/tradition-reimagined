@@ -19,7 +19,7 @@ const HeroSection = () => {
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="animate-fade-up">
           <h1 className="font-playfair text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-            Location & Vente de Tenues Traditionnelles Ivoiriennes et Africaines – SEKA Vanessa
+            SEKA C. VANESSA
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-4 font-light">
             Fondatrice & Créatrice de TENUE TRADITIONNELLE

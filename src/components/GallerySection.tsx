@@ -8,10 +8,12 @@ const GallerySection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   const [showAllVideos, setShowAllVideos] = useState(false);
+  const [showAllAudios, setShowAllAudios] = useState(false);
 
   const tabs = [
     { id: 'photos', name: 'Photos', icon: Eye },
-    { id: 'videos', name: 'Vidéos', icon: Play }
+    { id: 'videos', name: 'Vidéos', icon: Play },
+    { id: 'audios', name: 'Audios', icon: Play }
   ];
 
   const categories = [
@@ -26,99 +28,95 @@ const GallerySection = () => {
     { id: 'custom', name: 'Créations personnalisées' },
   ];
 
-  // Vidéos Facebook et YouTube
+  // Vidéos Facebook
   const videos = [
-    // Vidéos YouTube existantes
     {
       id: 1,
-      title: 'Tenues Ivoiriennes dans sa Diversité',
-      description: 'Découvrez la richesse et la variété des créations traditionnelles ivoiriennes',
-      url: 'https://youtube.com/shorts/3M_sZ-eZSv0?si=30uyaGC7QyMWpHiz',
-      type: 'youtube',
-      category: 'Traditions Ivoiriennes',
-      thumbnail: 'https://img.youtube.com/vi/3M_sZ-eZSv0/maxresdefault.jpg'
-    },
-    {
-      id: 2,
-      title: 'Tenue AKAN Jaune Royal',
-      description: 'Une création somptueuse inspirée de la culture AKAN en jaune royal',
-      url: 'https://youtube.com/shorts/vIvzhteFV9w?si=Pi5wO5L9r6eWyz0i',
-      type: 'youtube',
-      category: 'AKAN',
-      thumbnail: 'https://img.youtube.com/vi/vIvzhteFV9w/maxresdefault.jpg'
-    },
-    {
-      id: 3,
-      title: 'Robe de Mariée Traditionnelle',
-      description: 'Une création unique pour un mariage traditionnel inoubliable',
-      url: 'https://youtube.com/shorts/TEaUuVHX_DY?si=8KYC3vBtg0Rp7et4',
-      type: 'youtube',
-      category: 'Mariages',
-      thumbnail: 'https://img.youtube.com/vi/TEaUuVHX_DY/maxresdefault.jpg'
-    },
-    // Nouvelles vidéos Facebook
-    {
-      id: 4,
       title: 'Tenue Traditionnelle DIDA Authentique',
       description: 'Découvrez la beauté des tenues traditionnelles DIDA avec leurs tissus rafia naturel et leurs accessoires ethniques',
       url: 'https://www.facebook.com/share/v/17J3tSqrwj/',
       type: 'facebook',
       category: 'DIDA',
-      thumbnail: '/api/placeholder/400/600'
+      thumbnail: '/src/assets/video-thumbnail-default.jpg'
     },
     {
-      id: 5,
+      id: 2,
       title: 'Élégance AKAN Royale',
       description: 'Plongez dans l\'univers royal AKAN avec cette magnifique création aux tissus Kente et bijoux dorés',
       url: 'https://www.facebook.com/share/v/1AqCBPAjR7/',
       type: 'facebook',
       category: 'AKAN',
-      thumbnail: '/api/placeholder/400/600'
+      thumbnail: '/src/assets/video-thumbnail-default.jpg'
     },
     {
-      id: 6,
+      id: 3,
       title: 'Création AKAN Exceptionnelle',
       description: 'Une tenue AKAN d\'exception qui marie tradition et modernité dans un style unique',
       url: 'https://www.facebook.com/share/v/1A5cx84Uek/',
       type: 'facebook',
       category: 'AKAN',
-      thumbnail: '/api/placeholder/400/600'
+      thumbnail: '/src/assets/video-thumbnail-default.jpg'
     },
     {
-      id: 7,
+      id: 4,
       title: 'Majesté AKAN Traditionnelle',
       description: 'Admirez cette création AKAN somptueuse qui reflète toute la richesse culturelle de cette tradition',
       url: 'https://www.facebook.com/share/v/17724rJYuC/',
       type: 'facebook',
       category: 'AKAN',
-      thumbnail: '/api/placeholder/400/600'
+      thumbnail: '/src/assets/video-thumbnail-default.jpg'
     },
     {
-      id: 8,
+      id: 5,
       title: 'Tenue Traditionnelle GOURO',
       description: 'Découvrez l\'art vestimentaire GOURO avec cette création authentique aux couleurs chatoyantes',
       url: 'https://www.facebook.com/share/v/1ETdc9iofb/',
       type: 'facebook',
       category: 'GOURO',
-      thumbnail: '/api/placeholder/400/600'
+      thumbnail: '/src/assets/video-thumbnail-default.jpg'
     },
     {
-      id: 9,
+      id: 6,
       title: 'Présentation de la Boutique et des Pagnes',
       description: 'Visitez notre boutique et découvrez notre collection de pagnes traditionnels authentiques',
       url: 'https://www.facebook.com/share/v/19tqFEAAKV/',
       type: 'facebook',
       category: 'Présentation',
-      thumbnail: '/api/placeholder/400/600'
+      thumbnail: '/src/assets/video-thumbnail-default.jpg'
     },
     {
-      id: 10,
+      id: 7,
       title: 'Tenue Foulard en Pays AKAN',
       description: 'L\'art du port du foulard dans la tradition AKAN, une élégance intemporelle',
       url: 'https://www.facebook.com/share/v/1FzKcwcdzn/',
       type: 'facebook',
       category: 'AKAN',
-      thumbnail: '/api/placeholder/400/600'
+      thumbnail: '/src/assets/video-thumbnail-default.jpg'
+    }
+  ];
+
+  // Audios SoundCloud
+  const audios = [
+    {
+      id: 1,
+      title: 'Tenue AKAN',
+      description: 'Présentation audio de nos magnifiques tenues traditionnelles AKAN',
+      url: 'https://soundcloud.com/tenue-traditionnelle/tenue-akan?si=36b32d202e954034890ce688a49b4557&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing',
+      category: 'AKAN'
+    },
+    {
+      id: 2,
+      title: 'Tenue DIDA',
+      description: 'Découvrez l\'authentique tradition DIDA à travers cette présentation audio',
+      url: 'https://soundcloud.com/tenue-traditionnelle/tenue-akan?si=36b32d202e954034890ce688a49b4557&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing',
+      category: 'DIDA'
+    },
+    {
+      id: 3,
+      title: 'Présentation du Magasin',
+      description: 'Visite audio de notre boutique de tenues traditionnelles et de nos collections',
+      url: 'https://soundcloud.com/tenue-traditionnelle/tenue-akan?si=36b32d202e954034890ce688a49b4557&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing',
+      category: 'Présentation'
     }
   ];
 
@@ -298,6 +296,7 @@ const GallerySection = () => {
   // Limiter l'affichage à 8 éléments par défaut
   const displayedPhotos = showAllPhotos ? filteredItems : filteredItems.slice(0, 8);
   const displayedVideos = showAllVideos ? videos : videos.slice(0, 8);
+  const displayedAudios = showAllAudios ? audios : audios.slice(0, 8);
 
   const openModal = (index: number) => {
     const filtered = filteredItems;
@@ -546,6 +545,94 @@ const GallerySection = () => {
                   className="px-8 py-3 bg-luxury-gold text-deep-black font-semibold rounded-full hover:bg-luxury-gold/90 transition-colors shadow-glow"
                 >
                   Voir toutes les vidéos ({videos.length - 8} de plus)
+                </button>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Audios Section */}
+        {activeTab === 'audios' && (
+          <>
+            <div className="text-center mb-12">
+              <p className="text-lg text-muted-foreground">
+                Écoutez les présentations audio de nos créations traditionnelles
+              </p>
+            </div>
+
+            {/* Audio Gallery Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+              {displayedAudios.map((audio, index) => (
+                <div
+                  key={audio.id}
+                  className="group overflow-hidden rounded-2xl shadow-elegant hover-lift bg-card animate-fade-up"
+                  style={{ animationDelay: `${index * 0.2}s` }}
+                >
+                  {/* Audio Visual */}
+                  <div className="relative aspect-[4/3] bg-gradient-to-br from-luxury-gold/20 to-deep-black/20 overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-luxury-gold/30 via-luxury-gold/10 to-deep-black/20 flex flex-col items-center justify-center">
+                      <div className="text-center text-foreground">
+                        <div className="w-16 h-16 bg-luxury-gold rounded-full flex items-center justify-center mb-4 mx-auto shadow-glow">
+                          <Play className="w-8 h-8 text-deep-black ml-1" />
+                        </div>
+                        <div className="font-playfair text-lg font-semibold mb-2">{audio.category}</div>
+                        <div className="text-sm text-muted-foreground">Présentation Audio</div>
+                      </div>
+                    </div>
+                    
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-deep-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                      <a
+                        href={audio.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-2 bg-luxury-gold/90 backdrop-blur-sm px-6 py-3 rounded-full text-deep-black font-semibold hover:bg-luxury-gold transition-colors shadow-glow"
+                      >
+                        <ExternalLink size={18} />
+                        <span>Écouter sur SoundCloud</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-medium text-luxury-gold bg-luxury-gold/10 px-3 py-1 rounded-full">
+                        {audio.category}
+                      </span>
+                      <Play className="w-5 h-5 text-luxury-gold" />
+                    </div>
+                    
+                    <h3 className="font-playfair text-xl font-bold text-foreground mb-3 line-clamp-2">
+                      {audio.title}
+                    </h3>
+                    
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                      {audio.description}
+                    </p>
+                    
+                    <a
+                      href={audio.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center space-x-2 text-luxury-gold hover:text-primary-hover font-medium text-sm transition-colors"
+                    >
+                      <span>Écouter maintenant</span>
+                      <ExternalLink size={14} />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Bouton Voir plus pour audios */}
+            {!showAllAudios && audios.length > 8 && (
+              <div className="text-center mb-16">
+                <button
+                  onClick={() => setShowAllAudios(true)}
+                  className="px-8 py-3 bg-luxury-gold text-deep-black font-semibold rounded-full hover:bg-luxury-gold/90 transition-colors shadow-glow"
+                >
+                  Voir tous les audios ({audios.length - 8} de plus)
                 </button>
               </div>
             )}

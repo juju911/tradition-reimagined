@@ -179,15 +179,26 @@ const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left">
-          <p className="text-white/60 text-sm mb-4 md:mb-0">
-            © {currentYear} SEKA C. VANESSA - TENUE TRADITIONNELLE. Tous droits réservés.
-          </p>
+        <div className="border-t border-white/20 pt-8">
+          <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left mb-4">
+            <p className="text-white/60 text-sm mb-4 md:mb-0">
+              © {currentYear} SEKA C. VANESSA - TENUE TRADITIONNELLE. Tous droits réservés.
+            </p>
+            
+            <div className="flex items-center space-x-2 text-white/60 text-sm">
+              <span>Créé avec</span>
+              <Heart className="w-4 h-4 text-luxury-gold fill-current" />
+              <span>en Côte d'Ivoire</span>
+            </div>
+          </div>
           
-          <div className="flex items-center space-x-2 text-white/60 text-sm">
-            <span>Créé avec</span>
-            <Heart className="w-4 h-4 text-luxury-gold fill-current" />
-            <span>en Côte d'Ivoire</span>
+          <div className="text-center">
+            <a 
+              href="/mentions-legales" 
+              className="text-white/60 hover:text-luxury-gold transition-colors text-sm"
+            >
+              Mentions Légales
+            </a>
           </div>
         </div>
       </div>
